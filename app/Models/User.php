@@ -7,42 +7,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    protected $fillable = ['nim', 'nidn', 'name', 'password', 'role', 'is_approved'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected static function booted()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        static::creating(function ($user) {
+            // Mengisi data name, password, role, dan is_approved berdasarkan nim atau nidn
+            if ($user->nim) {
+                $student = \App\Models\Student::where('nim', $user->nim)->first();
+                if ($student) {
+                    $user->name = $student->name;
+                    $user->role = $student->role;
+                    $user->password = $student->password;
+                    $user->is_approved = $student->is_approved;
+                }
+            }
+
+            if ($user->nidn) {
+                $admin = \App\Models\Admin::where('nidn', $user->nidn)->first();
+                if ($admin) {
+                    $user->name = $admin->name;
+                    $user->role = $admin->role;
+                    $user->password = $admin->password;
+                    $user->is_approved = $admin->is_approved;
+                }
+            }
+        });
     }
 }
