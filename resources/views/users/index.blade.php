@@ -59,7 +59,8 @@
                                             <i class="bi bi-trash"></i>
                                         </button>
 
-                                        <form id="delete-form-{{ $user->id }}" action="" method="POST"
+                                        <form id="delete-form-{{ $user->id }}"
+                                            action="{{ route('users.destroy', $user->id) }}" method="POST"
                                             style="display: none;">
                                             @csrf
                                             @method('DELETE')
