@@ -20,8 +20,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    // User Start
     Route::resource('users', UserController::class)->middleware(['auth', 'role:Admin']);
+    Route::post('/user/{id}/approve', [UserController::class, 'approve'])->name('user.approve');
+    // User End
 });
 
 require __DIR__ . '/auth.php';

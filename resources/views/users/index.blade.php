@@ -47,12 +47,17 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-900 capitalize">
 
-                                        <a href=""
-                                            class="{{ $user->is_approved ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800' }}"
-                                            title="{{ $user->is_approved ? 'Batalkan Persetujuan' : 'Setujui' }}">
-                                            <i
-                                                class="bi {{ $user->is_approved ? 'bi-x-square' : 'bi-check-square' }}"></i>
-                                        </a>
+                                        <form action="{{ route('user.approve', $user->id) }}" method="POST"
+                                            class="inline">
+                                            @csrf
+                                            @method('POST')
+                                            <button type="submit"
+                                                class="{{ $user->is_approved ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800' }} bg-transparent border-none p-0 cursor-pointer"
+                                                title="{{ $user->is_approved ? 'Batalkan Persetujuan' : 'Setujui' }}">
+                                                <i
+                                                    class="bi {{ $user->is_approved ? 'bi-x-square' : 'bi-check-square' }}"></i>
+                                            </button>
+                                        </form>
 
                                         <button type="button" class="text-red-600 hover:text-red-800" title="Hapus"
                                             onclick="deleteUser({{ $user->id }})">

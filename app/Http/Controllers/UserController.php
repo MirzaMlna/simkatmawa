@@ -67,4 +67,13 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
+
+    public function approve($id)
+    {
+        $user = User::findOrFail($id);
+        $user->update([
+            'is_approved' => !$user->is_approved,
+        ]);
+        return redirect()->route('users.index')->with('success', 'Status verifikasi berhasil diperbarui.');
+    }
 }
