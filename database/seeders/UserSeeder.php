@@ -1,15 +1,18 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
         // Admin
-        User::create([
+        DB::table('users')->insert([
             'name' => 'Admin',
             'identity_number' => '2210010156',
             'study_program' => 'Teknik Informatika',
@@ -20,7 +23,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Mahasiswa
-        User::create([
+        DB::table('users')->insert([
             'name' => 'Mahasiswa',
             'identity_number' => '2210010155',
             'study_program' => 'Sistem Informasi',
