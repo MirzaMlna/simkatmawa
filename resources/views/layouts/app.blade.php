@@ -40,6 +40,7 @@
             <main class="flex-1 p-4">
                 {{ $slot }}
             </main>
+            @include('layouts.footer')
         </div>
     </div>
 </body>
