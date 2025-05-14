@@ -9,11 +9,17 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4">
                 <div class="overflow-x-auto">
+                    <div class="ms-1 mt-1 mb-4">
+                        <input type="text" id="searchInput" onkeyup="filterTable()"
+                            placeholder="Cari pengguna ..."
+                            class="w-full sm:w-1/3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
+                    </div>
+
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase">No</th>
-                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase">NIM / NIDN
+                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase">NPM / NIDN
                                 </th>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase">Nama</th>
                                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase">Prodi</th>
@@ -99,6 +105,25 @@
                 if (result.isConfirmed) {
                     document.getElementById('delete-form-' + userId).submit();
                 }
+            });
+        }
+
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll("tbody tr");
+
+            rows.forEach(row => {
+                const columns = row.querySelectorAll("td");
+                let found = false;
+
+                columns.forEach(column => {
+                    if (column.textContent.toLowerCase().includes(filter)) {
+                        found = true;
+                    }
+                });
+
+                row.style.display = found ? "" : "none";
             });
         }
     </script>
