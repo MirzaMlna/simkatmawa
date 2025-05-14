@@ -70,11 +70,19 @@
 
                 <a href="dashboard" class="block px-4 py-2 rounded hover:bg-gray-200"><i class="bi bi-house me-1">
                     </i> Beranda</a>
+                <p class="block px-4 py-2 rounded"><i class="bi bi-award me-1">
+                    </i> Prestasi</p>
+                <div class="ms-9">
+                    <a href="" class="block text-sm px-2 py-1 rounded hover:bg-gray-200"><i
+                            class="bi bi-person me-1"></i> Pribadi</a>
+                    <a href="" class="block text-sm px-2 py-1 rounded hover:bg-gray-200"><i
+                            class="bi bi-people me-1"></i> Tim</a>
+                </div>
 
                 @auth
                     @if (auth()->user()->role === 'Admin')
                         <a href="users" class="block px-4 py-2 rounded hover:bg-gray-200">
-                            <i class="bi bi-people me-1"></i> Pengguna
+                            <i class="bi bi-person-vcard me-1"></i> Pengguna
                         </a>
                     @endif
                 @endauth
