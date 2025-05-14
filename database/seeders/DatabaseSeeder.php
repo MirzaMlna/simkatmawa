@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\UserSeeder as SeedersUserSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use UserSeeder;
@@ -14,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call(UserSeeder::class);
+        $this->call([
+            AchievementSeeder::class,
+            SeedersUserSeeder::class,
+        ]);
     }
 }

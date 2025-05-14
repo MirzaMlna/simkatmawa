@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // User Start
     Route::resource('users', UserController::class)->middleware(['auth', 'role:Admin']);
+    Route::resource('achievements', AchievementController::class);
     Route::post('/user/{id}/approve', [UserController::class, 'approve'])->name('user.approve');
     // User End
 });
