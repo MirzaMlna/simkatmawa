@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('student_assignment_letter', 255)->nullable();
             $table->string('supervisor_number', 50)->nullable();
             $table->string('supervisor_assignment_letter', 255)->nullable();
-            $table->enum('status', ['Tunda', 'Diterima', 'Ditolak'])->default('Tunda');
+            $table->enum('status', ['Tunda', 'Diterima'])->default('Tunda');
             $table->timestamps();
         });
     }

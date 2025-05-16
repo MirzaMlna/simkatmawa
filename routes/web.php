@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('achievements', AchievementController::class);
     Route::post('/user/{id}/approve', [UserController::class, 'approve'])->name('user.approve');
     // User End
+    // Achievement Start
+    Route::patch('/achievements/{id}/status/{status}', [AchievementController::class, 'updateStatus'])->name('achievements.updateStatus');
+    // Achievement End
 });
 
 require __DIR__ . '/auth.php';

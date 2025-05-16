@@ -21,7 +21,7 @@ class AchievementSeeder extends Seeder
         $achievementLevels = ['Wilayah', 'Kabupaten/Kota', 'Provinsi', 'Nasional', 'Internasional'];
         $participationTypes = ['Tim', 'Pribadi'];
         $executionModels = ['Daring', 'Luring'];
-        $statuses = ['Tunda', 'Diterima', 'Ditolak'];
+        $statuses = ['Tunda', 'Diterima'];
 
         for ($i = 0; $i < 20; $i++) {
             DB::table('achievements')->insert([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Achievement;
 use Illuminate\Http\Request;
 
 class AchievementController extends Controller
@@ -11,7 +12,8 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        return view('achievements.index');
+        $achievements = Achievement::paginate(10);
+        return view('achievements.index', compact('achievements'));
     }
 
     /**
@@ -60,5 +62,20 @@ class AchievementController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $validStatuses = ['Tunda', 'Diterima'];
+
+        if (!in_array($status, $validStatuses)) {
+            return back()->with('error', 'Status tidak valid.');
+        }
+
+        $achievement = Achievement::findOrFail($id);
+        $achievement->status = $status;
+        $achievement->save();
+
+        return back()->with('success', "Status berhasil diubah menjadi $status.");
     }
 }
