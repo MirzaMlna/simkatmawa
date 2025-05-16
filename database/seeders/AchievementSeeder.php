@@ -18,7 +18,7 @@ class AchievementSeeder extends Seeder
 
         $achievementTypes = ['Akademik', 'Non Akademik'];
         $programByOptions = ['Dikti', 'Non Dikti'];
-        $achievementLevels = ['Wilayah', 'Kabupaten/Kota', 'Provinsi', 'Nasional', 'Internasional'];
+        $achievementLevels = ['Provinsi', 'Nasional', 'Internasional'];
         $participationTypes = ['Tim', 'Pribadi'];
         $executionModels = ['Daring', 'Luring'];
         $statuses = ['Tunda', 'Diterima'];

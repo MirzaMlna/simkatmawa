@@ -8,6 +8,12 @@
     <div class="mx-auto sm:px-6 lg:px-8 sm:py-6 lg:py-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
             <div class="overflow-x-auto">
+                <div class="ms-1 mt-1 mb-4">
+                    <a href="{{ route('achievements.create') }}"
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
+                        <i class="bi bi-plus-lg me-2"></i> Tambah Prestasi
+                    </a>
+                </div>
                 <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
                     <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
                         <tr>
@@ -172,6 +178,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-4">
+                    {{ $achievements->links() }}
+                </div>
             </div>
         </div>
     </div>

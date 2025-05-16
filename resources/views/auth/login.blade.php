@@ -1,6 +1,6 @@
 <x-guest-layout>
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+    <form method="POST" action="{{ route('login') }}" class="space-y-6" autocomplete="off">
         @csrf
         <!-- NIM/NIDN -->
         <div>

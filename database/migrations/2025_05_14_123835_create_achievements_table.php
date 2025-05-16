@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('study_program', 255)->nullable();
             $table->enum('achievement_type', ['Akademik', 'Non Akademik'])->nullable();
             $table->enum('program_by', ['Dikti', 'Non Dikti'])->nullable();
-            $table->enum('achievement_level', ['Wilayah', 'Kabupaten/Kota', 'Provinsi', 'Nasional', 'Internasional'])->nullable();
+            $table->enum('achievement_level', ['Provinsi', 'Nasional', 'Internasional'])->nullable();
             $table->enum('participation_type', ['Tim', 'Pribadi'])->nullable();
             $table->enum('execution_model', ['Daring', 'Luring'])->nullable();
             $table->string('event_name', 255)->nullable();
             $table->integer('participant_count')->nullable();
             $table->string('university_count')->nullable();
-            $table->string('nation_count')->nullable();
+            $table->string('nation_count')->nullable()->default(1);
             $table->string('achievement_title', 255)->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
