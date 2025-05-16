@@ -8,12 +8,17 @@
     <div class="mx-auto sm:px-6 lg:px-8 sm:py-6 lg:py-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
             <div class="overflow-x-auto">
-                <div class="ms-1 mt-1 mb-4">
+                <div class="ms-1 mt-1 mb-4 flex items-center justify-between">
                     <a href="{{ route('achievements.create') }}"
                         class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
                         <i class="bi bi-plus-lg me-2"></i> Tambah Prestasi
                     </a>
+
+                    <!-- Input Search -->
+                    <input type="text" id="searchInput" placeholder="Cari data..."
+                        class="ml-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm">
                 </div>
+
                 <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
                     <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
                         <tr>
@@ -27,7 +32,7 @@
                             <th class="px-4 py-2 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="dataTable">
                         @foreach ($achievements as $achievement)
                             <tr class="border-t">
                                 <td class="px-4 py-2">{{ $achievement->identity_number }}</td>
@@ -44,39 +49,70 @@
                                     </span>
                                 </td>
                                 <td class="px-4 py-2 text-center space-x-2">
-                                    <!-- Show Modal -->
-                                    <button onclick="showModal({{ $achievement->id }})"
-                                        class="text-blue-600 hover:text-blue-800" title="Lihat Detail">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </button>
-                                    <!-- Hubungi -->
-                                    <a href="tel:{{ $achievement->phone }}" class="text-teal-600 hover:text-teal-800"
-                                        title="Hubungi">
-                                        <i class="bi bi-telephone-fill"></i>
-                                    </a>
-                                    <!-- Tunda -->
-                                    <form
-                                        action="{{ route('achievements.updateStatus', ['id' => $achievement->id, 'status' => 'Tunda']) }}"
-                                        method="POST" class="inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="text-yellow-600 hover:text-yellow-800"
-                                            title="Tunda">
-                                            <i class="bi bi-clock-fill"></i>
+                                    @if (auth()->user()->role === 'Admin')
+                                        <!-- Show Modal -->
+                                        <button onclick="showModal({{ $achievement->id }})"
+                                            class="text-blue-600 hover:text-blue-800" title="Lihat Detail">
+                                            <i class="bi bi-eye-fill"></i>
                                         </button>
-                                    </form>
-                                    <!-- Terima -->
-                                    <form
-                                        action="{{ route('achievements.updateStatus', ['id' => $achievement->id, 'status' => 'Diterima']) }}"
-                                        method="POST" class="inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="text-green-600 hover:text-green-800"
-                                            title="Terima">
-                                            <i class="bi bi-check-circle-fill"></i>
+
+                                        <!-- Hubungi -->
+                                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $achievement->phone) }}"
+                                            class="text-green-600 hover:text-green-800" title="Hubungi via WhatsApp"
+                                            target="_blank">
+                                            <i class="bi bi-whatsapp"></i>
+                                        </a>
+
+                                        <!-- Tunda -->
+                                        <form
+                                            action="{{ route('achievements.updateStatus', ['id' => $achievement->id, 'status' => 'Tunda']) }}"
+                                            method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="text-yellow-600 hover:text-yellow-800"
+                                                title="Tunda">
+                                                <i class="bi bi-clock-fill"></i>
+                                            </button>
+                                        </form>
+
+                                        <!-- Terima -->
+                                        <form
+                                            action="{{ route('achievements.updateStatus', ['id' => $achievement->id, 'status' => 'Diterima']) }}"
+                                            method="POST" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="text-green-600 hover:text-green-800"
+                                                title="Terima">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                            </button>
+                                        </form>
+                                    @elseif (auth()->user()->role === 'Mahasiswa')
+                                        <!-- Show Modal -->
+                                        <button onclick="showModal({{ $achievement->id }})"
+                                            class="text-blue-600 hover:text-blue-800" title="Lihat Detail">
+                                            <i class="bi bi-eye-fill"></i>
                                         </button>
-                                    </form>
+
+                                        <!-- Edit -->
+                                        <a href="{{ route('achievements.edit', $achievement->id) }}"
+                                            class="text-indigo-600 hover:text-indigo-800" title="Edit">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+
+                                        <!-- Delete -->
+                                        <form action="{{ route('achievements.destroy', $achievement->id) }}"
+                                            method="POST" class="inline"
+                                            onsubmit="return confirm('Yakin ingin menghapus prestasi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-800"
+                                                title="Hapus">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
+
                             </tr>
 
                             <!-- Modal -->
@@ -159,8 +195,6 @@
                                             @endif
                                         </div>
 
-                                        <div><strong>NIDN Pembimbing:</strong>
-                                            {{ $achievement->supervisor_number ?? '-' }}</div>
 
                                         <div><strong>Surat Tugas Pembimbing:</strong>
                                             @if ($achievement->supervisor_assignment_letter)
@@ -172,6 +206,8 @@
                                                 <span class="text-gray-500">Tidak ada</span>
                                             @endif
                                         </div>
+                                        <div><strong>NIDN Pembimbing:</strong>
+                                            {{ $achievement->supervisor_number ?? '-' }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -193,5 +229,25 @@
         function closeModal(id) {
             document.getElementById('modal-' + id).classList.add('hidden');
         }
+
+        function showModal(id) {
+            document.getElementById('modal-' + id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById('modal-' + id).classList.add('hidden');
+        }
+
+        // Search function
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#dataTable tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
     </script>
+
 </x-app-layout>
