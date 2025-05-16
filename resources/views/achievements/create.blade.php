@@ -122,22 +122,30 @@
 
                     <div>
                         <label for="university_count" class="block text-sm font-medium">Jumlah Universitas</label>
-                        <input type="text" name="university_count" id="university_count"
-                            class="mt-1 w-full rounded border-gray-300">
+                        <select id="university_count" name="university_count"
+                            class="mt-1 block w-full rounded-md border-gray-300">
+                            <option value="">-- Pilih --</option>
+                            <option value="<10">Kurang dari 10</option>
+                            <option value=">=10">Lebih dari 10</option>
+                        </select>
                     </div>
 
                     <div>
                         <label for="nation_count" class="block text-sm font-medium">Jumlah Negara <span
                                 class="text-gray-500">Kosongi jika bukan Internasional</span></label>
-                        <input type="text" name="nation_count" id="nation_count"
-                            class="mt-1 w-full rounded border-gray-300">
+                        <select id="nation_count" name="nation_count"
+                            class="mt-1 block w-full rounded-md border-gray-300">
+                            <option value="">-- Pilih --</option>
+                            <option value="<10">Kurang dari 10</option>
+                            <option value=">=10">Lebih dari 10</option>
+                        </select>
                     </div>
 
                     <div>
                         <label for="achievement_title" class="block text-sm font-medium">Capaian Prestasi</label>
                         <select id="achievement_title" name="achievement_title"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            <option value="">Pilih</option>
+                            <option value="">-- Pilih --</option>
                             <option value="Juara 1">Juara 1</option>
                             <option value="Juara 2">Juara 2</option>
                             <option value="Juara 3">Juara 3</option>
