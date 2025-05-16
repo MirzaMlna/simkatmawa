@@ -132,13 +132,9 @@
 
                     <div>
                         <label for="nation_count" class="block text-sm font-medium">Jumlah Negara <span
-                                class="text-gray-500">Kosongi jika bukan Internasional</span></label>
-                        <select id="nation_count" name="nation_count"
-                            class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">-- Pilih --</option>
-                            <option value="<10">Kurang dari 10</option>
-                            <option value=">=10">Lebih dari 10</option>
-                        </select>
+                                class="text-gray-500">Biarkan "1" jika bukan Internasional</span></label>
+                        <input type="number" name="participant_count" id="participant_count"
+                            class="mt-1 w-full rounded border-gray-300" min="1" value="1">
                     </div>
 
                     <div>
