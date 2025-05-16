@@ -68,14 +68,16 @@
                     </x-slot>
                 </x-dropdown>
 
-                <a href="dashboard" class="block px-4 py-2 rounded hover:bg-gray-200"><i class="bi bi-house me-1">
+                <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-200"><i
+                        class="bi bi-house me-1">
                     </i> Beranda</a>
-                <a href="achievements" class="block px-4 py-2 rounded hover:bg-gray-200"><i class="bi bi-award me-1">
+                <a href="{{ route('achievements.index') }}" class="block px-4 py-2 rounded hover:bg-gray-200"><i
+                        class="bi bi-award me-1">
                     </i> Prestasi</a>
 
                 @auth
                     @if (auth()->user()->role === 'Admin')
-                        <a href="users" class="block px-4 py-2 rounded hover:bg-gray-200">
+                        <a href="{{ route('users.index') }}" class="block px-4 py-2 rounded hover:bg-gray-200">
                             <i class="bi bi-people me-1"></i> Pengguna
                         </a>
                     @endif
