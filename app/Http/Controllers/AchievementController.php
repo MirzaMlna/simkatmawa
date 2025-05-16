@@ -14,7 +14,14 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        $achievements = Achievement::orderBy('created_at', 'desc')->paginate(10);
+        if (auth()->user()->role === 'Mahasiswa') {
+            $achievements = Achievement::where('identity_number', auth()->user()->identity_number)
+                ->latest()
+                ->paginate(10);
+        } else {
+            // Admin melihat semua data
+            $achievements = Achievement::orderBy('created_at', 'desc')->paginate(10);
+        }
         return view('achievements.index', compact('achievements'));
     }
 
