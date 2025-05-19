@@ -12,18 +12,47 @@ class AchievementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+
         if (auth()->user()->role === 'Mahasiswa') {
-            $achievements = Achievement::where('identity_number', auth()->user()->identity_number)
-                ->latest()
-                ->paginate(10);
+            $query = Achievement::where('identity_number', auth()->user()->identity_number);
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('achievement_type', 'like', "%{$search}%")
+                        ->orWhere('achievement_level', 'like', "%{$search}%")
+                        ->orWhere('achievement_title', 'like', "%{$search}%")
+                        ->orWhere('status', 'like', "%{$search}%");
+                });
+            }
         } else {
             // Admin melihat semua data
-            $achievements = Achievement::orderBy('created_at', 'desc')->paginate(10);
+            $query = Achievement::query();
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('identity_number', 'like', "%{$search}%")
+                        ->orWhere('name', 'like', "%{$search}%")
+                        ->orWhere('study_program', 'like', "%{$search}%")
+                        ->orWhere('achievement_type', 'like', "%{$search}%")
+                        ->orWhere('achievement_level', 'like', "%{$search}%")
+                        ->orWhere('achievement_title', 'like', "%{$search}%")
+                        ->orWhere('status', 'like', "%{$search}%");
+                });
+            }
         }
-        return view('achievements.index', compact('achievements'));
+
+        $achievements = $query->latest()->paginate(10)->withQueryString();
+
+        // Data untuk admin
+        $achievementCount = auth()->user()->role === 'Admin' ? Achievement::count() : null;
+        $pendingCount = auth()->user()->role === 'Admin' ? Achievement::where('status', 'Tunda')->count() : null;
+
+        return view('achievements.index', compact('achievements', 'achievementCount', 'pendingCount'));
     }
+
 
     /**
      * Show the form for creating a new resource.

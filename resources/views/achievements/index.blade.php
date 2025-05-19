@@ -6,7 +6,34 @@
     </x-slot>
 
     <div class="mx-auto sm:px-6 lg:px-8 sm:py-6 lg:py-8">
+
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+            @if (auth()->user()->role === 'Admin')
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <!-- Total Prestasi -->
+                    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-semibold">Total Prestasi Masuk</h3>
+                                <p class="text-2xl font-bold">{{ $achievementCount }}</p>
+                            </div>
+                            <i class="bi bi-award-fill text-3xl"></i>
+                        </div>
+                    </div>
+
+                    <!-- Prestasi Tertunda -->
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-semibold">Prestasi Tertunda</h3>
+                                <p class="text-2xl font-bold">{{ $pendingCount }}</p>
+                            </div>
+                            <i class="bi bi-clock-fill text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="overflow-x-auto">
                 <div class="ms-1 mt-1 mb-4 flex items-center justify-between">
                     <a href="{{ route('achievements.create') }}"
@@ -15,8 +42,14 @@
                     </a>
 
                     <!-- Input Search -->
-                    <input type="text" id="searchInput" placeholder="Cari data..."
-                        class="ml-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm">
+                    <form method="GET" action="{{ route('achievements.index') }}" class="flex items-center gap-2">
+                        <input type="text" name="search" placeholder="Cari data..." value="{{ request('search') }}"
+                            class="ml-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm">
+                        <button type="submit"
+                            class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
+                            Cari
+                        </button>
+                    </form>
                 </div>
 
                 <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
@@ -217,6 +250,13 @@
                 <div class="mt-4">
                     {{ $achievements->links() }}
                 </div>
+                @if (Auth::user()->role === 'Mahasiswa')
+                    <div class=" text-gray-400 mt-5"> Jika data belum lengkap, simpan dulu dan lengkapi
+                        nanti.
+                        Data
+                        tidak
+                        akan dikirim ke Admin sampai semua kolom wajib terisi!</div>
+                @endif
             </div>
         </div>
     </div>
@@ -237,17 +277,6 @@
         function closeModal(id) {
             document.getElementById('modal-' + id).classList.add('hidden');
         }
-
-        // Search function
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#dataTable tr');
-
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? '' : 'none';
-            });
-        });
     </script>
 
 </x-app-layout>
