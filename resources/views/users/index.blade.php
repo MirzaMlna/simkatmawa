@@ -10,9 +10,26 @@
             <div class="p-4">
                 <div class="overflow-x-auto">
                     <div class="ms-1 mt-1 mb-4">
-                        <input type="text" id="searchInput" onkeyup="filterTable()"
-                            placeholder="Cari pengguna ..."
-                            class="w-full sm:w-1/3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
+                        <form method="GET" action="{{ route('users.index') }}" class="mb-4 flex sm:w-1/2">
+                            {{-- <input type="text" name="search" placeholder="Cari pengguna ..."
+                                value="{{ request('search') }}"
+                                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
+                            <button type="submit"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                Cari
+                            </button> --}}
+
+                            <form method="GET" action="{{ route('users.index') }}" class="flex items-center gap-2">
+                                <input type="text" name="search" placeholder="Cari pengguna..."
+                                    value="{{ request('search') }}"
+                                    class="ml-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm">
+                                <button type="submit"
+                                    class="ms-3 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
+                                    Cari
+                                </button>
+                            </form>
+                        </form>
+
                     </div>
 
                     <table class="min-w-full divide-y divide-gray-200">

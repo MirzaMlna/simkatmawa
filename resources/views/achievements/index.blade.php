@@ -149,7 +149,6 @@
                             </tr>
 
                             <!-- Modal -->
-                            <!-- Modal -->
                             <div id="modal-{{ $achievement->id }}"
                                 class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
                                 <div
