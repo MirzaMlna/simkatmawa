@@ -6,6 +6,9 @@ use App\Models\Achievement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Exports\AchievementsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class AchievementController extends Controller
 {
@@ -53,10 +56,6 @@ class AchievementController extends Controller
         return view('achievements.index', compact('achievements', 'achievementCount', 'pendingCount'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('achievements.create');

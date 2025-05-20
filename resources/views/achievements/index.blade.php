@@ -40,7 +40,6 @@
                         class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
                         <i class="bi bi-plus-lg me-2"></i> Tambah Prestasi
                     </a>
-
                     <!-- Input Search -->
                     <form method="GET" action="{{ route('achievements.index') }}" class="flex items-center gap-2">
                         <input type="text" name="search" placeholder="Cari data..." value="{{ request('search') }}"
@@ -50,6 +49,10 @@
                             Cari
                         </button>
                     </form>
+                    <a href="{{ url('/achievements.export') }}"
+                        class="inline-block bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 px-4 rounded shadow">
+                        <i class="bi bi-download mr-1"></i> Export Excel
+                    </a>
                 </div>
 
                 <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
