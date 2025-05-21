@@ -19,7 +19,7 @@
 <body class="font-sans text-gray-900 antialiased">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
         <div class="text-center justify-center flex flex-col items-center">
-            <img src="{{ asset('images/uniska_logo.png') }}" alt="uniska_logo" class="w-16 h-16">
+            <img src="{{ asset('images/uniska_logo.webp') }}" alt="uniska_logo" class="w-16 h-16">
             <h1 class="mt-2 text-3xl font-bold text-gray-900">SIMKATMAWA UNISKA</h1>
         </div>
 

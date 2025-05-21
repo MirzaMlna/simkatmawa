@@ -192,7 +192,7 @@
                                                     {{ $achievement->news_link }}
                                                 </a>
                                             @else
-                                                <span class="text-gray-500">Tidak ada</span>
+                                                <span class="text-red-500">Tidak ada</span>
                                             @endif
                                         </div>
 
@@ -204,7 +204,7 @@
                                                     Lihat Sertifikat
                                                 </a>
                                             @else
-                                                <span class="text-gray-500">Tidak ada</span>
+                                                <span class="text-red-500">Tidak ada</span>
                                             @endif
                                         </div>
 
@@ -215,7 +215,7 @@
                                                     Lihat Foto
                                                 </a>
                                             @else
-                                                <span class="text-gray-500">Tidak ada</span>
+                                                <span class="text-red-500">Tidak ada</span>
                                             @endif
                                         </div>
 
@@ -226,7 +226,7 @@
                                                     Lihat Surat
                                                 </a>
                                             @else
-                                                <span class="text-gray-500">Tidak ada</span>
+                                                <span class="text-red-500">Tidak ada</span>
                                             @endif
                                         </div>
 
@@ -238,7 +238,7 @@
                                                     Lihat Surat
                                                 </a>
                                             @else
-                                                <span class="text-gray-500">Tidak ada</span>
+                                                <span class="text-red-500">Tidak ada</span>
                                             @endif
                                         </div>
                                         <div><strong>NIDN Pembimbing:</strong>

@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="">
-        <img src="{{ asset('images/startled_student.png') }}" alt="uniska_logo" class="w-32 h-32 mx-auto">
+        <img src="{{ asset('images/startled_student.webp') }}" alt="student" class="w-32 h-32 mx-auto">
         <hr>
     </div>
     <div class="p-8 rounded-lg text-center max-w-md bg-white mx-auto">

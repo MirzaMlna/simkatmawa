@@ -21,7 +21,7 @@
 <body class="bg-gray-100  text-gray-900 flex flex-col min-h-screen">
     <div class="flex-grow flex items-center justify-center">
         <div class="w-full max-w-4xl flex flex-col items-center text-center space-y-4">
-            <img src="{{ asset('images/uniska_logo.png') }}" alt="uniska_logo" class="w-32 h-32">
+            <img src="{{ asset('images/uniska_logo.webp') }}" alt="uniska_logo" class="w-32 h-32">
             <div class="w-full max-w-2xl">
                 <main class="mb-8">
                     <h1 class="text-2xl font-bold">SIMKATMAWA UNISKA</h1>
