@@ -10,14 +10,12 @@
             <div class="p-4">
                 <div class="overflow-x-auto">
                     <div class="ms-1 mt-1 mb-4">
-                        <form method="GET" action="{{ route('users.index') }}" class="mb-4 flex sm:w-1/2">
-                            {{-- <input type="text" name="search" placeholder="Cari pengguna ..."
-                                value="{{ request('search') }}"
-                                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300">
-                            <button type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                Cari
-                            </button> --}}
+
+                        <div class="flex justify-between items-center mb-4">
+                            <a href="{{ route('users.create') }}"
+                                class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md shadow">
+                                + Tambah Pengguna
+                            </a>
 
                             <form method="GET" action="{{ route('users.index') }}" class="flex items-center gap-2">
                                 <input type="text" name="search" placeholder="Cari pengguna..."
@@ -28,7 +26,7 @@
                                     Cari
                                 </button>
                             </form>
-                        </form>
+                        </div>
 
                     </div>
 

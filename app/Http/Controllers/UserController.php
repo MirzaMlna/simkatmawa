@@ -30,23 +30,29 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'identity_number' => 'required|string|max:50|unique:users',
+            'study_program' => 'required|string|max:100',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:Admin,Mahasiswa',
+        ]);
+
+        $validated['password'] = bcrypt($validated['password']);
+        $validated['is_approved'] = true;
+
+        User::create($validated);
+        return redirect()->route('users.index')->with('success', 'Pengguna berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.
