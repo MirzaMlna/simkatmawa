@@ -11,25 +11,14 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin
+        // Bapak Yusup
         DB::table('users')->insert([
-            'name' => 'Admin',
-            'identity_number' => '2210010156',
-            'study_program' => 'Teknik Informatika',
-            'phone' => '081234567890',
+            'name' => 'Yusup Indra Wijaya, S.Kom., M.Kom.',
+            'identity_number' => '1101058401',
+            'study_program' => 'Kemahasiswaan',
+            'phone' => '085259004449',
             'password' => Hash::make('password'),
             'role' => 'Admin',
-            'is_approved' => true,
-        ]);
-
-        // Mahasiswa
-        DB::table('users')->insert([
-            'name' => 'Mahasiswa',
-            'identity_number' => '2210010155',
-            'study_program' => 'Sistem Informasi',
-            'phone' => '081298765432',
-            'password' => Hash::make('password'),
-            'role' => 'Mahasiswa',
             'is_approved' => true,
         ]);
     }
