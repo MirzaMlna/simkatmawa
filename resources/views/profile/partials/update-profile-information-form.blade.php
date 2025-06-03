@@ -25,7 +25,7 @@
         </div>
 
         <div>
-            <x-input-label for="identity_number" :value="__('identity_number')" />
+            <x-input-label for="identity_number" :value="__('NPM/NIDN')" />
             <x-text-input id="identity_number" name="identity_number" type="number" class="mt-1 block w-full"
                 :value="old('identity_number', $user->identity_number)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('identity_number')" />

@@ -134,7 +134,7 @@
                             class="mt-1 block w-full rounded-md border-gray-300">
                             <option value="">-- Pilih --</option>
                             <option value="<10">Kurang dari 10</option>
-                            <option value=">=10">Lebih dari 10</option>
+                            <option value=">=10">Lebih dari sama dengan 10</option>
                         </select>
                     </div>
 
@@ -156,6 +156,7 @@
                             <option value="Harapan 1">Harapan 1</option>
                             <option value="Harapan 2">Harapan 2</option>
                             <option value="Harapan 3">Harapan 3</option>
+                            <option value="Harapan 3">Agregasi Kejuaraan / Penghargaan Tambahan / Juara Umum</option>
                             <option value="Peserta">Peserta</option>
                         </select>
                     </div>

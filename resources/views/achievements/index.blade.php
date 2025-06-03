@@ -138,24 +138,27 @@
                                             <i class="bi bi-eye-fill"></i>
                                         </button>
 
-                                        <!-- Edit -->
-                                        <a href="{{ route('achievements.edit', $achievement->id) }}"
-                                            class="text-indigo-600 hover:text-indigo-800" title="Edit">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
+                                        @if ($achievement->status !== 'Diterima')
+                                            <!-- Edit -->
+                                            <a href="{{ route('achievements.edit', $achievement->id) }}"
+                                                class="text-indigo-600 hover:text-indigo-800" title="Edit">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
 
-                                        <!-- Delete -->
-                                        <form action="{{ route('achievements.destroy', $achievement->id) }}"
-                                            method="POST" class="inline"
-                                            onsubmit="return confirm('Yakin ingin menghapus prestasi ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800"
-                                                title="Hapus">
-                                                <i class="bi bi-trash-fill"></i>
-                                            </button>
-                                        </form>
+                                            <!-- Delete -->
+                                            <form action="{{ route('achievements.destroy', $achievement->id) }}"
+                                                method="POST" class="inline"
+                                                onsubmit="return confirm('Yakin ingin menghapus prestasi ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-800"
+                                                    title="Hapus">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     @endif
+
                                 </td>
 
                             </tr>

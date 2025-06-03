@@ -55,11 +55,11 @@
 
                     <x-slot name="content">
                         @auth
-                            @if (auth()->user()->role === 'Admin')
-                                <x-dropdown-link :href="route('profile.edit')">
-                                    {{ __('Profile') }}
-                                </x-dropdown-link>
-                            @endif
+                            {{-- @if (auth()->user()->role === 'Admin') --}}
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+                            {{-- @endif --}}
                         @endauth
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

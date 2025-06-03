@@ -50,6 +50,7 @@
                     @endif
                     {{-- <hr class="border-t border-gray-300 dark:border-gray-300 opacity-20 mt-10"> --}}
                 </main>
+                <a class="underline text-blue-600" href="{{ route('guide') }}">Lihat Panduan</a>
             </div>
         </div>
     </div>

@@ -156,7 +156,7 @@
                             <option value="{{ old('university_count', $achievement->university_count) }}">
                                 {{ old('university_count', $achievement->university_count) }}</option>
                             <option value="<10">Kurang dari 10</option>
-                            <option value=">=10">Lebih dari 10</option>
+                            <option value=">=10">Lebih dari sama dengan 10</option>
                         </select>
                     </div>
 
@@ -173,7 +173,7 @@
                         <select id="achievement_title" name="achievement_title"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                             <option value="">Pilih</option>
-                            @foreach (['Juara 1', 'Juara 2', 'Juara 3', 'Harapan 1', 'Harapan 2', 'Harapan 3', 'Peserta'] as $title)
+                            @foreach (['Juara 1', 'Juara 2', 'Juara 3', 'Harapan 1', 'Harapan 2', 'Harapan 3', 'Agregasi Kejuaraan / Penghargaan Tambahan / Juara Umum', 'Peserta'] as $title)
                                 <option value="{{ $title }}"
                                     {{ old('achievement_title', $achievement->achievement_title) == $title ? 'selected' : '' }}>
                                     {{ $title }}</option>
