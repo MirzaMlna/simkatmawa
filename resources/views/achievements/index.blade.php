@@ -41,18 +41,21 @@
                         <i class="bi bi-plus-lg me-2"></i> Tambah Prestasi
                     </a>
                     <!-- Input Search -->
-                    <form method="GET" action="{{ route('achievements.index') }}" class="flex items-center gap-2">
-                        <input type="text" name="search" placeholder="Cari data..." value="{{ request('search') }}"
-                            class="ml-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm">
-                        <button type="submit"
-                            class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
-                            Cari
-                        </button>
-                    </form>
-                    <a href="{{ url('/achievements.export') }}"
-                        class="inline-block bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 px-4 rounded shadow">
-                        <i class="bi bi-download mr-1"></i> Export Excel
-                    </a>
+                    @if (auth()->user()->role === 'Admin')
+                        <form method="GET" action="{{ route('achievements.index') }}" class="flex items-center gap-2">
+                            <input type="text" name="search" placeholder="Cari data..."
+                                value="{{ request('search') }}"
+                                class="ml-4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm">
+                            <button type="submit"
+                                class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow">
+                                Cari
+                            </button>
+                        </form>
+                        <a href="{{ url('/achievements.export') }}"
+                            class="inline-block bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 px-4 rounded shadow">
+                            <i class="bi bi-download mr-1"></i> Export Excel
+                        </a>
+                    @endif
                 </div>
 
                 <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
@@ -91,6 +94,12 @@
                                             class="text-blue-600 hover:text-blue-800" title="Lihat Detail">
                                             <i class="bi bi-eye-fill"></i>
                                         </button>
+
+                                        <!-- Edit -->
+                                        <a href="{{ route('achievements.edit', $achievement->id) }}"
+                                            class="text-indigo-600 hover:text-indigo-800" title="Edit">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
 
                                         <!-- Hubungi -->
                                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $achievement->phone) }}"

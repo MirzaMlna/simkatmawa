@@ -14,48 +14,56 @@
                     <div>
                         <label for="identity_number" class="block text-sm font-medium">NPM</label>
                         <input type="text" name="identity_number" id="identity_number"
+                            @if (auth()->user()->role === 'Mahasiswa') value="{{ Auth::user()->identity_number }}"  readonly @endif
                             class="mt-1 w-full rounded border-gray-300" required>
                     </div>
 
                     <div>
                         <label for="name" class="block text-sm font-medium">Nama</label>
                         <input type="text" name="name" id="name" class="mt-1 w-full rounded border-gray-300"
-                            required>
+                            @if (auth()->user()->role === 'Mahasiswa') value="{{ Auth::user()->name }}" readonly @endif required>
                     </div>
 
                     <div>
                         <label for="phone" class="block text-sm font-medium">Nomor HP</label>
                         <input type="text" name="phone" id="phone" class="mt-1 w-full rounded border-gray-300"
+                            @if (auth()->user()->role === 'Mahasiswa') value="{{ Auth::user()->phone }}" readonly @endif
                             required>
                     </div>
 
                     <div>
                         <label for="study_program" class="block text-sm font-medium">Program Studi</label>
                         <select name="study_program" id="study_program" class="mt-1 w-full rounded border-gray-300">
-                            <option value="">Pilih Program Studi</option>
-                            <!-- isi opsi program studi tetap sama -->
-                            <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
-                            <option value="Ilmu Administrasi Publik">Ilmu Administrasi Publik</option>
-                            <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
-                            <option value="Bimbingan dan Konseling">Bimbingan dan Konseling</option>
-                            <option value="Pendidikan Kimia">Pendidikan Kimia</option>
-                            <option value="Pendidikan Olahraga">Pendidikan Olahraga</option>
-                            <option value="Manajemen">Manajemen</option>
-                            <option value="Peternakan">Peternakan</option>
-                            <option value="Agribisnis">Agribisnis</option>
-                            <option value="Hukum Ekonomi Syari’ah">Hukum Ekonomi Syari’ah</option>
-                            <option value="Ekonomi Syari’ah">Ekonomi Syari’ah</option>
-                            <option value="Pendidikan Guru Madrasah Ibtidaiyah">Pendidikan Guru Madrasah Ibtidaiyah
-                            </option>
-                            <option value="Teknik Mesin">Teknik Mesin</option>
-                            <option value="Teknik Sipil">Teknik Sipil</option>
-                            <option value="Teknik Elektro">Teknik Elektro</option>
-                            <option value="Teknik Industri">Teknik Industri</option>
-                            <option value="Kesehatan Masyarakat">Kesehatan Masyarakat</option>
-                            <option value="Ilmu Hukum">Ilmu Hukum</option>
-                            <option value="Teknik Informatika">Teknik Informatika</option>
-                            <option value="Sistem Informasi">Sistem Informasi</option>
-                            <option value="Farmasi">Farmasi</option>
+                            @if (auth()->user()->role === 'Mahasiswa')
+                                <option value="{{ Auth::user()->study_program }}">{{ Auth::user()->study_program }}
+                                </option>
+                            @endif
+                            @if (auth()->user()->role === 'Admin')
+                                <option value="">Pilih Program Studi</option>
+                                <!-- isi opsi program studi tetap sama -->
+                                <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
+                                <option value="Ilmu Administrasi Publik">Ilmu Administrasi Publik</option>
+                                <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
+                                <option value="Bimbingan dan Konseling">Bimbingan dan Konseling</option>
+                                <option value="Pendidikan Kimia">Pendidikan Kimia</option>
+                                <option value="Pendidikan Olahraga">Pendidikan Olahraga</option>
+                                <option value="Manajemen">Manajemen</option>
+                                <option value="Peternakan">Peternakan</option>
+                                <option value="Agribisnis">Agribisnis</option>
+                                <option value="Hukum Ekonomi Syari’ah">Hukum Ekonomi Syari’ah</option>
+                                <option value="Ekonomi Syari’ah">Ekonomi Syari’ah</option>
+                                <option value="Pendidikan Guru Madrasah Ibtidaiyah">Pendidikan Guru Madrasah Ibtidaiyah
+                                </option>
+                                <option value="Teknik Mesin">Teknik Mesin</option>
+                                <option value="Teknik Sipil">Teknik Sipil</option>
+                                <option value="Teknik Elektro">Teknik Elektro</option>
+                                <option value="Teknik Industri">Teknik Industri</option>
+                                <option value="Kesehatan Masyarakat">Kesehatan Masyarakat</option>
+                                <option value="Ilmu Hukum">Ilmu Hukum</option>
+                                <option value="Teknik Informatika">Teknik Informatika</option>
+                                <option value="Sistem Informasi">Sistem Informasi</option>
+                                <option value="Farmasi">Farmasi</option>
+                            @endif
                         </select>
                     </div>
 
