@@ -28,6 +28,7 @@ class Achievement extends Model
         'award_photo_file',
         'student_assignment_letter',
         'supervisor_number',
+        'supervisor_nuptk',
         'supervisor_assignment_letter',
         'status',
     ];

@@ -7,6 +7,17 @@
 
     <div class="max-w-4xl mx-auto py-10 sm:px-6 lg:px-8">
         <div class="bg-white shadow-md rounded px-6 py-8">
+            @if ($errors->any())
+                <div class="mb-4 p-4 rounded bg-red-100 border border-red-400 text-red-700">
+                    <strong>Oops! Ada beberapa kesalahan:</strong>
+                    <ul class="mt-2 list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('achievements.store') }}" method="POST" enctype="multipart/form-data"
                 autocomplete="off">
                 @csrf
@@ -102,8 +113,8 @@
                         <select name="participation_type" id="participation_type"
                             class="mt-1 w-full rounded border-gray-300">
                             <option value="">-- Pilih --</option>
-                            <option value="Tim">Tim</option>
-                            <option value="Pribadi">Pribadi</option>
+                            <option value="Individu">Individu</option>
+                            <option value="Kelompok">Kelompok</option>
                         </select>
                     </div>
 
@@ -141,7 +152,7 @@
                     <div>
                         <label for="nation_count" class="block text-sm font-medium">Jumlah Negara <span
                                 class="text-gray-500">Biarkan "1" jika bukan Internasional</span></label>
-                        <input type="number" name="participant_count" id="participant_count"
+                        <input type="number" name="nation_count" id="nation_count"
                             class="mt-1 w-full rounded border-gray-300" min="1" value="1">
                     </div>
 
@@ -212,7 +223,12 @@
 
                     <div>
                         <label for="supervisor_number" class="block text-sm font-medium">NIDN Pembimbing</label>
-                        <input type="text" name="supervisor_number" id="supervisor_number"
+                        <input type="number" name="supervisor_number" id="supervisor_number"
+                            class="mt-1 w-full rounded border-gray-300">
+                    </div>
+                    <div>
+                        <label for="supervisor_nuptk" class="block text-sm font-medium">NUPTK Pembimbing</label>
+                        <input type="number" name="supervisor_nuptk" id="supervisor_nuptk"
                             class="mt-1 w-full rounded border-gray-300">
                     </div>
                 </div>

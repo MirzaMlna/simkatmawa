@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('achievement_type', ['Akademik', 'Non Akademik'])->nullable();
             $table->enum('program_by', ['Dikti', 'Non Dikti'])->nullable();
             $table->enum('achievement_level', ['Provinsi', 'Nasional', 'Internasional'])->nullable();
-            $table->enum('participation_type', ['Tim', 'Pribadi'])->nullable();
+            $table->enum('participation_type', ['Individu', 'Kelompok'])->nullable();
             $table->enum('execution_model', ['Daring', 'Luring'])->nullable();
             $table->string('event_name', 255)->nullable();
             $table->integer('participant_count')->nullable();
@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('award_photo_file', 255)->nullable();
             $table->string('student_assignment_letter', 255)->nullable();
             $table->string('supervisor_number', 50)->nullable();
+            $table->string('supervisor_nuptk', 50)->nullable();
             $table->string('supervisor_assignment_letter', 255)->nullable();
             $table->enum('status', ['Tunda', 'Diterima'])->default('Tunda');
             $table->timestamps();

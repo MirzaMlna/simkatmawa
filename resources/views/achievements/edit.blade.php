@@ -113,12 +113,12 @@
                         <select name="participation_type" id="participation_type"
                             class="mt-1 w-full rounded border-gray-300">
                             <option value="">-- Pilih --</option>
-                            <option value="Tim"
-                                {{ old('participation_type', $achievement->participation_type) == 'Tim' ? 'selected' : '' }}>
-                                Tim</option>
-                            <option value="Pribadi"
-                                {{ old('participation_type', $achievement->participation_type) == 'Pribadi' ? 'selected' : '' }}>
-                                Pribadi</option>
+                            <option value="Individu"
+                                {{ old('participation_type', $achievement->participation_type) == 'Individu' ? 'selected' : '' }}>
+                                Individu</option>
+                            <option value="Kelompok"
+                                {{ old('participation_type', $achievement->participation_type) == 'Kelompok' ? 'selected' : '' }}>
+                                Kelompok</option>
                         </select>
                     </div>
 
@@ -153,10 +153,15 @@
                         <label for="university_count" class="block text-sm font-medium">Jumlah Universitas</label>
                         <select id="university_count" name="university_count"
                             class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="{{ old('university_count', $achievement->university_count) }}">
-                                {{ old('university_count', $achievement->university_count) }}</option>
-                            <option value="<10">Kurang dari 10</option>
-                            <option value=">=10">Lebih dari sama dengan 10</option>
+                            <option value="<10"
+                                {{ old('university_count', $achievement->university_count) == '<10' ? 'selected' : '' }}>
+                                Kurang dari 10
+                            </option>
+                            <option value=">=10"
+                                {{ old('university_count', $achievement->university_count) == '>=10' ? 'selected' : '' }}>
+                                Lebih dari atau sama dengan 10
+                            </option>
+
                         </select>
                     </div>
 
@@ -236,6 +241,13 @@
                         <input type="text" name="supervisor_number" id="supervisor_number"
                             class="mt-1 w-full rounded border-gray-300"
                             value="{{ old('supervisor_number', $achievement->supervisor_number) }}">
+                    </div>
+
+                    <div>
+                        <label for="supervisor_nuptk" class="block text-sm font-medium">NUPTK Pembimbing</label>
+                        <input type="number" name="supervisor_nuptk" id="supervisor_nuptk"
+                            class="mt-1 w-full rounded border-gray-300"
+                            value="{{ old('supervisor_nuptk', $achievement->supervisor_nuptk) }}">
                     </div>
                 </div>
 

@@ -44,7 +44,8 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             'File Sertifikat',
             'Foto Penghargaan',
             'Surat Tugas Mahasiswa',
-            'NIDN Dosen',
+            'NIDN Pembimbing',
+            'NUPTK Pembimbing',
             'Surat Tugas Dosen',
             'Status',
             'Tanggal Diupload',
@@ -76,7 +77,8 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             $a->certificate_file ? url('storage/' . $a->certificate_file) : 'Tidak ada',
             $a->award_photo_file ? url('storage/' . $a->award_photo_file) : 'Tidak ada',
             $a->student_assignment_letter ? url('storage/' . $a->student_assignment_letter) : 'Tidak ada',
-            $a->nidn,
+            $a->supervisor_number,
+            $a->supervisor_nuptk,
             $a->supervisor_assignment_letter ? url('storage/' . $a->supervisor_assignment_letter) : 'Tidak ada',
             $a->status,
             $a->created_at,
@@ -87,7 +89,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
     public function styles(Worksheet $sheet)
     {
         $dataCount = Achievement::count() + 1; // +1 untuk heading
-        $range = "A1:Z{$dataCount}";
+        $range = "A1:AA{$dataCount}";
 
         // Apply border ke seluruh cell
         $sheet->getStyle($range)->applyFromArray([
@@ -100,7 +102,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
         ]);
 
         // Style heading
-        $sheet->getStyle('A1:Z1')->applyFromArray([
+        $sheet->getStyle('A1:AA1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'size' => 12,

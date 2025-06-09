@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
         // Bapak Yusup
         DB::table('users')->insert([
             'name' => 'Yusup Indra Wijaya, S.Kom., M.Kom.',
-            'identity_number' => '1101058401',
+            'identity_number' => '1126128602',
             'study_program' => 'Kemahasiswaan',
             'phone' => '085259004449',
             'password' => Hash::make('password'),

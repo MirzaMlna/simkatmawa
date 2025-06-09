@@ -131,6 +131,16 @@
                                                 <i class="bi bi-check-circle-fill"></i>
                                             </button>
                                         </form>
+                                        <form action="{{ route('achievements.destroy', $achievement->id) }}"
+                                            method="POST" class="inline"
+                                            onsubmit="return confirm('Yakin ingin menghapus prestasi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-800"
+                                                title="Hapus">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
                                     @elseif (auth()->user()->role === 'Mahasiswa')
                                         <!-- Show Modal -->
                                         <button onclick="showModal({{ $achievement->id }})"
@@ -253,8 +263,12 @@
                                                 <span class="text-red-500">Tidak ada</span>
                                             @endif
                                         </div>
+
                                         <div><strong>NIDN Pembimbing:</strong>
                                             {{ $achievement->supervisor_number ?? '-' }}</div>
+
+                                        <div><strong>NUPTK Pembimbing:</strong>
+                                            {{ $achievement->supervisor_nuptk ?? '-' }}</div>
                                     </div>
                                 </div>
                             </div>

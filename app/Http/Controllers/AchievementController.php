@@ -74,7 +74,7 @@ class AchievementController extends Controller
             'achievement_type' => 'nullable|in:Akademik,Non Akademik',
             'program_by' => 'nullable|in:Dikti,Non Dikti',
             'achievement_level' => 'nullable|in:Provinsi,Nasional,Internasional',
-            'participation_type' => 'nullable|in:Tim,Pribadi',
+            'participation_type' => 'nullable|in:Individu,Kelompok',
             'execution_model' => 'nullable|in:Daring,Luring',
             'event_name' => 'nullable|string|max:255',
             'participant_count' => 'nullable|integer',
@@ -88,6 +88,7 @@ class AchievementController extends Controller
             'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
             'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
             'supervisor_number' => 'nullable|string|max:50',
+            'supervisor_nuptk' => 'nullable|string|max:50',
             'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
         ]);
 
@@ -154,7 +155,7 @@ class AchievementController extends Controller
             'achievement_type' => 'nullable|in:Akademik,Non Akademik',
             'program_by' => 'nullable|in:Dikti,Non Dikti',
             'achievement_level' => 'nullable|in:Provinsi,Nasional,Internasional',
-            'participation_type' => 'nullable|in:Tim,Pribadi',
+            'participation_type' => 'nullable|in:Individu,Kelompok',
             'execution_model' => 'nullable|in:Daring,Luring',
             'event_name' => 'nullable|string|max:255',
             'participant_count' => 'nullable|integer',
@@ -168,6 +169,7 @@ class AchievementController extends Controller
             'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
             'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
             'supervisor_number' => 'nullable|string|max:50',
+            'supervisor_nuptk' => 'nullable|string|max:50',
             'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
         ]);
 
