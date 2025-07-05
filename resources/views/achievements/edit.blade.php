@@ -100,7 +100,7 @@
                         <select name="achievement_level" id="achievement_level"
                             class="mt-1 w-full rounded border-gray-300">
                             <option value="">-- Pilih --</option>
-                            @foreach (['Provinsi', 'Nasional', 'Internasional'] as $level)
+                            @foreach (['Kabupaten / Kota', 'Provinsi', 'Nasional', 'Internasional'] as $level)
                                 <option value="{{ $level }}"
                                     {{ old('achievement_level', $achievement->achievement_level) == $level ? 'selected' : '' }}>
                                     {{ $level }}</option>

@@ -102,6 +102,7 @@
                         <select name="achievement_level" id="achievement_level"
                             class="mt-1 w-full rounded border-gray-300">
                             <option value="">-- Pilih --</option>
+                            <option value="Kabupaten / Kota">Kabupaten/Kota</option>
                             <option value="Provinsi">Provinsi</option>
                             <option value="Nasional">Nasional</option>
                             <option value="Internasional">Internasional</option>
