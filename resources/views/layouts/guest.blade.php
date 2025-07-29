@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
     <meta charset="utf-8">
@@ -10,22 +10,43 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div class="text-center justify-center flex flex-col items-center">
-            <img src="{{ asset('images/uniska_logo.webp') }}" alt="uniska_logo" class="w-16 h-16">
-            <h1 class="mt-2 text-3xl font-bold text-gray-900">SIMKATMAWA UNISKA</h1>
+<body class="h-full font-inter text-gray-900 antialiased">
+    <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <!-- Header -->
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <div class="flex justify-center">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl">
+                    <i class="bi bi-mortarboard-fill text-white text-3xl"></i>
+                </div>
+            </div>
+            <h1 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+                SIMKATMAWA
+            </h1>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Sistem Informasi Kemahasiswaan UNISKA
+            </p>
         </div>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            <x-auth-session-status class="mb-4 text-center text-green-600" :status="session('status')" />
-            {{ $slot }}
+        <!-- Form Container -->
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div class="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-200">
+                <x-auth-session-status class="mb-4 text-center text-green-600" :status="session('status')" />
+                {{ $slot }}
+            </div>
+            
+            <!-- Footer -->
+            <div class="mt-6 text-center">
+                <p class="text-xs text-gray-500">
+                    © {{ date('Y') }} UNISKA. Semua Hak Cipta Dilindungi.
+                </p>
+            </div>
         </div>
     </div>
 </body>
