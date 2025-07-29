@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Achievement
+ *
+ * @property string|null $keterangan
+ * @property string|null $perwakilan_uniska
+ * @property string|null $nama_ormawa
+ */
 class Achievement extends Model
 {
     protected $fillable = [
@@ -31,5 +38,8 @@ class Achievement extends Model
         'supervisor_nuptk',
         'supervisor_assignment_letter',
         'status',
+        'keterangan',
+        'perwakilan_uniska',
+        'nama_ormawa',
     ];
 }

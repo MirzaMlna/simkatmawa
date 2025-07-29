@@ -232,6 +232,28 @@
                         <input type="number" name="supervisor_nuptk" id="supervisor_nuptk"
                             class="mt-1 w-full rounded border-gray-300">
                     </div>
+
+                    <div>
+                        <label for="keterangan" class="block text-sm font-medium">Keterangan</label>
+                        <textarea name="keterangan" id="keterangan" class="mt-1 w-full rounded border-gray-300">{{ old('keterangan') }}</textarea>
+                    </div>
+                    <div>
+                        <label for="perwakilan_uniska" class="block text-sm font-medium">Lomba atas nama perwakilan
+                            UNISKA</label>
+                        <select name="perwakilan_uniska" id="perwakilan_uniska"
+                            class="mt-1 w-full rounded border-gray-300">
+                            <option value="">-- Pilih --</option>
+                            <option value="Ya" {{ old('perwakilan_uniska') == 'Ya' ? 'selected' : '' }}>Ya</option>
+                            <option value="Tidak" {{ old('perwakilan_uniska') == 'Tidak' ? 'selected' : '' }}>Tidak
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="nama_ormawa" class="block text-sm font-medium">ORMAWA yang diwakili
+                            (Kosongkan jika tidak mewakili ORMAWA)</label>
+                        <input type="text" name="nama_ormawa" id="nama_ormawa"
+                            class="mt-1 w-full rounded border-gray-300" value="{{ old('nama_ormawa') }}">
+                    </div>
                 </div>
 
                 <div class="mt-6">

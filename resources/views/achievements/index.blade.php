@@ -266,9 +266,12 @@
 
                                         <div><strong>NIDN Pembimbing:</strong>
                                             {{ $achievement->supervisor_number ?? '-' }}</div>
-
                                         <div><strong>NUPTK Pembimbing:</strong>
                                             {{ $achievement->supervisor_nuptk ?? '-' }}</div>
+                                        <div><strong>Keterangan:</strong> {{ $achievement->keterangan ?? '-' }}</div>
+                                        <div><strong>Lomba atas nama perwakilan UNISKA:</strong>
+                                            {{ $achievement->perwakilan_uniska ?? '-' }}</div>
+                                        <div><strong>Nama Ormawa:</strong> {{ $achievement->nama_ormawa ?? '-' }}</div>
                                     </div>
                                 </div>
                             </div>

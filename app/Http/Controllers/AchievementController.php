@@ -90,6 +90,9 @@ class AchievementController extends Controller
             'supervisor_number' => 'nullable|string|max:50',
             'supervisor_nuptk' => 'nullable|string|max:50',
             'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
+            'keterangan' => 'nullable|string',
+            'perwakilan_uniska' => 'nullable|in:Ya,Tidak',
+            'nama_ormawa' => 'nullable|string',
         ]);
 
         $data = $request->except([
@@ -118,7 +121,7 @@ class AchievementController extends Controller
 
         Achievement::create($data);
 
-        return redirect()->route('achievements.index')->with('success', 'Data prestasi berhasil disimpan.');
+        return redirect()->route('achievements.index')->with('success', 'Achievement data saved successfully.');
     }
 
 
@@ -171,6 +174,9 @@ class AchievementController extends Controller
             'supervisor_number' => 'nullable|string|max:50',
             'supervisor_nuptk' => 'nullable|string|max:50',
             'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
+            'keterangan' => 'nullable|string',
+            'perwakilan_uniska' => 'nullable|in:Ya,Tidak',
+            'nama_ormawa' => 'nullable|string',
         ]);
 
         $data = $request->except(['certificate_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter']);
@@ -191,7 +197,7 @@ class AchievementController extends Controller
 
         $achievement->update($data);
 
-        return redirect()->route('achievements.index')->with('success', 'Data berhasil diperbarui.');
+        return redirect()->route('achievements.index')->with('success', 'Achievement data updated successfully.');
     }
 
     /**
@@ -210,7 +216,7 @@ class AchievementController extends Controller
 
         $achievement->delete();
 
-        return back()->with('success', 'Data berhasil dihapus.');
+        return back()->with('success', 'Achievement deleted successfully.');
     }
 
     /**
@@ -221,13 +227,13 @@ class AchievementController extends Controller
         $validStatuses = ['Tunda', 'Diterima'];
 
         if (!in_array($status, $validStatuses)) {
-            return back()->with('error', 'Status tidak valid.');
+            return back()->with('error', 'Invalid status.');
         }
 
         $achievement = Achievement::findOrFail($id);
         $achievement->status = $status;
         $achievement->save();
 
-        return back()->with('success', "Status berhasil diubah menjadi $status.");
+        return back()->with('success', "Status updated to $status.");
     }
 }

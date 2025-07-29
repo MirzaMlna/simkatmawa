@@ -249,6 +249,32 @@
                             class="mt-1 w-full rounded border-gray-300"
                             value="{{ old('supervisor_nuptk', $achievement->supervisor_nuptk) }}">
                     </div>
+
+                    <div>
+                        <label for="keterangan" class="block text-sm font-medium">Keterangan</label>
+                        <textarea name="keterangan" id="keterangan" class="mt-1 w-full rounded border-gray-300">{{ old('keterangan', $achievement->keterangan) }}</textarea>
+                    </div>
+                    <div>
+                        <label for="perwakilan_uniska" class="block text-sm font-medium">Lomba atas nama perwakilan
+                            UNISKA</label>
+                        <select name="perwakilan_uniska" id="perwakilan_uniska"
+                            class="mt-1 w-full rounded border-gray-300">
+                            <option value="">-- Pilih --</option>
+                            <option value="Ya"
+                                {{ old('perwakilan_uniska', $achievement->perwakilan_uniska) == 'Ya' ? 'selected' : '' }}>
+                                Ya</option>
+                            <option value="Tidak"
+                                {{ old('perwakilan_uniska', $achievement->perwakilan_uniska) == 'Tidak' ? 'selected' : '' }}>
+                                Tidak</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="nama_ormawa" class="block text-sm font-medium">Apakah lomba mewakili ormawa (isi
+                            nama ormawa jika ada, kosongkan jika kd ormawa diisi)</label>
+                        <input type="text" name="nama_ormawa" id="nama_ormawa"
+                            class="mt-1 w-full rounded border-gray-300"
+                            value="{{ old('nama_ormawa', $achievement->nama_ormawa) }}">
+                    </div>
                 </div>
 
                 <div class="mt-6">
