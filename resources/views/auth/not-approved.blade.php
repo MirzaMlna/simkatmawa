@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layout-auth>
     <div class="">
         <img src="{{ asset('images/startled_student.webp') }}" alt="student" class="w-32 h-32 mx-auto">
         <hr>
@@ -15,4 +15,4 @@
             <a href="/" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Kembali</a>
         </div>
     </div>
-</x-guest-layout>
+</x-layout-auth>

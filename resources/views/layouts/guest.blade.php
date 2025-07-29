@@ -18,11 +18,13 @@
 </head>
 
 <body class="h-full font-inter text-gray-900 antialiased">
-    <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div
+        class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 xl:px-12 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
         <!-- Header -->
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="sm:mx-auto sm:w-full max-w-7xl">
             <div class="flex justify-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl">
+                <div
+                    class="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-xl">
                     <i class="bi bi-mortarboard-fill text-white text-3xl"></i>
                 </div>
             </div>
@@ -35,12 +37,12 @@
         </div>
 
         <!-- Form Container -->
-        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div class="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-200">
+        <div class="mt-8 sm:mx-auto sm:w-full">
+            <div class="bg-white py-8 px-6 md:px-8 lg:px-10 shadow-xl rounded-2xl border border-gray-200">
                 <x-auth-session-status class="mb-4 text-center text-green-600" :status="session('status')" />
                 {{ $slot }}
             </div>
-            
+
             <!-- Footer -->
             <div class="mt-6 text-center">
                 <p class="text-xs text-gray-500">
