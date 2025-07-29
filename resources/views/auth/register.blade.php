@@ -56,8 +56,8 @@
                     <option value="Manajemen">Manajemen</option>
                     <option value="Peternakan">Peternakan</option>
                     <option value="Agribisnis">Agribisnis</option>
-                    <option value="Hukum Ekonomi Syari'ah">Hukum Ekonomi Syari'ah</option>
-                    <option value="Ekonomi Syari'ah">Ekonomi Syari'ah</option>
+                    <option value="Hukum Ekonomi Syariah">Hukum Ekonomi Syariah</option>
+                    <option value="Ekonomi Syariah">Ekonomi Syariah</option>
                     <option value="Pendidikan Guru Madrasah Ibtidaiyah">Pendidikan Guru Madrasah Ibtidaiyah</option>
                     <option value="Teknik Mesin">Teknik Mesin</option>
                     <option value="Teknik Sipil">Teknik Sipil</option>
