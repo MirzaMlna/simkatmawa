@@ -266,9 +266,28 @@
                                 <i class="bi bi-chat-text text-gray-600 text-lg"></i>
                                 <h3 class="text-lg font-semibold text-gray-900">Informasi Tambahan</h3>
                             </div>
-                            <div>
-                                <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-2">Keterangan</label>
-                                <textarea name="keterangan" id="keterangan" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200 resize-none" placeholder="Tambahkan keterangan atau catatan tambahan...">{{ old('keterangan') }}</textarea>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-2">Keterangan</label>
+                                    <textarea name="keterangan" id="keterangan" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200 resize-none" placeholder="Tambahkan keterangan atau catatan tambahan...">{{ old('keterangan') }}</textarea>
+                                </div>
+
+                                <div>
+                                    <div class="mb-4">
+                                        <label for="perwakilan_uniska" class="block text-sm font-medium text-gray-700 mb-2">Lomba atas nama perwakilan UNISKA</label>
+                                        <select name="perwakilan_uniska" id="perwakilan_uniska" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">-- Pilih --</option>
+                                            <option value="Ya" {{ old('perwakilan_uniska') == 'Ya' ? 'selected' : '' }}>Ya</option>
+                                            <option value="Tidak" {{ old('perwakilan_uniska') == 'Tidak' ? 'selected' : '' }}>Tidak</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="nama_ormawa" class="block text-sm font-medium text-gray-700 mb-2">Nama Ormawa</label>
+                                        <p class="text-xs text-gray-500 mb-2">Isi nama ormawa jika ada, kosongkan jika tidak ada</p>
+                                        <input type="text" name="nama_ormawa" id="nama_ormawa" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200" value="{{ old('nama_ormawa') }}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
