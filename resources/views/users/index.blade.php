@@ -20,26 +20,26 @@
                 <div class="overflow-x-auto">
                     <!-- Action Bar -->
                     <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex flex-col gap-4">
                             <a href="{{ route('users.create') }}"
-                                class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg shadow-sm transition-colors">
+                                class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg shadow-sm transition-colors w-full sm:w-auto">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                 </svg>
                                 Tambah Pengguna
                             </a>
 
-                            <form method="GET" action="{{ route('users.index') }}" class="flex items-center gap-3">
-                                <div class="relative">
+                            <form method="GET" action="{{ route('users.index') }}" class="flex flex-col sm:flex-row gap-3">
+                                <div class="relative flex-1">
                                     <input type="text" name="search" placeholder="Cari pengguna..."
                                         value="{{ request('search') }}"
-                                        class="pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors w-64">
+                                        class="pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors w-full">
                                     <svg class="absolute left-3 top-3.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
                                 </div>
                                 <button type="submit"
-                                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg transition-colors">
+                                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg transition-colors w-full sm:w-auto">
                                     Cari
                                 </button>
                             </form>
@@ -48,33 +48,34 @@
 
                     <!-- Modern Table -->
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                        <table class="min-w-full divide-y divide-gray-200">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200" style="min-width: 800px;">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">No</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">NPM / NIDN</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Prodi</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Telepon</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Peran</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">No</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">NPM / NIDN</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Nama</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Prodi</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Telepon</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Peran</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Status</th>
+                                    <th class="px-3 sm:px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($users as $index => $user)
                                     <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $index + 1 }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-900 font-mono">{{ $user->identity_number }}</td>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $user->name }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">{{ $user->study_program }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">{{ $user->phone }}</td>
-                                        <td class="px-6 py-4 text-sm">
+                                        <td class="px-3 sm:px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $index + 1 }}</td>
+                                        <td class="px-3 sm:px-6 py-4 text-sm text-gray-900 font-mono whitespace-nowrap">{{ $user->identity_number }}</td>
+                                        <td class="px-3 sm:px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $user->name }}</td>
+                                        <td class="px-3 sm:px-6 py-4 text-sm text-gray-600 whitespace-nowrap">{{ $user->study_program }}</td>
+                                        <td class="px-3 sm:px-6 py-4 text-sm text-gray-600 whitespace-nowrap">{{ $user->phone }}</td>
+                                        <td class="px-3 sm:px-6 py-4 text-sm whitespace-nowrap">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $user->role === 'Admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
                                                 {{ $user->role }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 text-sm">
+                                        <td class="px-3 sm:px-6 py-4 text-sm whitespace-nowrap">
                                             @if ($user->is_approved)
                                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -91,8 +92,8 @@
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 text-sm">
-                                            <div class="flex items-center space-x-2">
+                                        <td class="px-3 sm:px-6 py-4 text-sm whitespace-nowrap">
+                                            <div class="flex flex-col sm:flex-row items-center gap-2">
                                                 <form action="{{ route('user.approve', $user->id) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('POST')
@@ -131,7 +132,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="px-6 py-12 text-center">
+                                        <td colspan="8" class="px-3 sm:px-6 py-12 text-center">
                                             <div class="flex flex-col items-center">
                                                 <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -143,7 +144,8 @@
                                     </tr>
                                 @endforelse
                             </tbody>
-                        </table>
+                            </table>
+                        </div>
                     </div>
                     <div class="mt-4">
                         {{ $users->links() }}
