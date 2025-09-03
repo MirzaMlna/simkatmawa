@@ -658,7 +658,15 @@
             </div>
             
             <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400">&copy; {{ date('Y') }} SIMKATMAWA - UNISKA Banjarmasin. All rights reserved.</p>
+                <div class="text-gray-400">
+                    <p>&copy; {{ date('Y') }} SIMKATMAWA - UNISKA Banjarmasin. All rights reserved.</p>
+                    <p class="text-sm mt-1">
+                        Made with ❤️ by
+                        <a href="https://randa.my.id" target="_blank" class="text-blue-400 hover:text-blue-300 hover:underline transition-colors duration-200">Randa</a>
+                        and
+                        <a href="https://mirzamlna.github.io/portfolio" target="_blank" class="text-blue-400 hover:text-blue-300 hover:underline transition-colors duration-200">Mirza</a>
+                    </p>
+                </div>
                 <div class="flex space-x-4 mt-4 md:mt-0">
                     <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-all duration-300">
                         <i class="bi bi-facebook"></i>
