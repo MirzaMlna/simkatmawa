@@ -113,6 +113,18 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
+                                    <label for="kategori" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                                    <select name="kategori" id="kategori" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                        <option value="">-- Pilih Kategori --</option>
+                                        <option value="Riset dan Inovasi: STEM" {{ old('kategori', $achievement->kategori) == 'Riset dan Inovasi: STEM' ? 'selected' : '' }}>Riset dan Inovasi: STEM</option>
+                                        <option value="Riset dan Inovasi: SSH" {{ old('kategori', $achievement->kategori) == 'Riset dan Inovasi: SSH' ? 'selected' : '' }}>Riset dan Inovasi: SSH</option>
+                                        <option value="Seni dan Budaya" {{ old('kategori', $achievement->kategori) == 'Seni dan Budaya' ? 'selected' : '' }}>Seni dan Budaya</option>
+                                        <option value="Olahraga" {{ old('kategori', $achievement->kategori) == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                                        <option value="Minat Khusus" {{ old('kategori', $achievement->kategori) == 'Minat Khusus' ? 'selected' : '' }}>Minat Khusus</option>
+                                    </select>
+                                </div>
+
+                                <div>
                                     <label for="achievement_type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Prestasi</label>
                                     <select name="achievement_type" id="achievement_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                         <option value="">-- Pilih Jenis Prestasi --</option>
@@ -150,11 +162,11 @@
                                 </div>
 
                                 <div>
-                                    <label for="execution_model" class="block text-sm font-medium text-gray-700 mb-2">Model Pelaksanaan</label>
-                                    <select name="execution_model" id="execution_model" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">-- Pilih Model --</option>
+                                    <label for="execution_model" class="block text-sm font-medium text-gray-700 mb-2">Bentuk <span class="text-red-500">*</span></label>
+                                    <select name="execution_model" id="execution_model" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                        <option value="">-- Pilih Bentuk --</option>
                                         <option value="Daring" {{ old('execution_model', $achievement->execution_model) == 'Daring' ? 'selected' : '' }}>Daring</option>
-                                        <option value="Luring" {{ old('execution_model', $achievement->execution_model) == 'Luring' ? 'selected' : '' }}>Luring</option>
+                                        <option value="Luring/Hibrida" {{ old('execution_model', $achievement->execution_model) == 'Luring/Hibrida' ? 'selected' : '' }}>Luring/Hibrida</option>
                                     </select>
                                 </div>
 
@@ -164,17 +176,23 @@
                                 </div>
 
                                 <div>
+                                    <label for="nama_cabang" class="block text-sm font-medium text-gray-700 mb-2">Nama Cabang <span class="text-red-500">*</span></label>
+                                    <input type="text" name="nama_cabang" id="nama_cabang" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('nama_cabang', $achievement->nama_cabang) }}">
+                                </div>
+
+                                <div>
+                                    <label for="nama_penyelenggara" class="block text-sm font-medium text-gray-700 mb-2">Nama Penyelenggara <span class="text-red-500">*</span></label>
+                                    <input type="text" name="nama_penyelenggara" id="nama_penyelenggara" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('nama_penyelenggara', $achievement->nama_penyelenggara) }}">
+                                </div>
+
+                                <div>
                                     <label for="participant_count" class="block text-sm font-medium text-gray-700 mb-2">Jumlah Peserta</label>
                                     <input type="number" name="participant_count" id="participant_count" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('participant_count', $achievement->participant_count) }}">
                                 </div>
 
                                 <div>
                                     <label for="university_count" class="block text-sm font-medium text-gray-700 mb-2">Jumlah Universitas</label>
-                                    <select id="university_count" name="university_count" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="<10" {{ old('university_count', $achievement->university_count) == '<10' ? 'selected' : '' }}>Kurang dari 10</option>
-                                        <option value=">=10" {{ old('university_count', $achievement->university_count) == '>=10' ? 'selected' : '' }}>Lebih dari sama dengan 10</option>
-                                    </select>
+                                    <input type="number" name="university_count" id="university_count" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('university_count', $achievement->university_count) }}">
                                 </div>
 
                                 <div>
@@ -202,6 +220,11 @@
                                     <input type="date" name="end_date" id="end_date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('end_date', $achievement->end_date) }}">
                                 </div>
 
+                                <div>
+                                    <label for="certificate_date" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Sertifikat</label>
+                                    <input type="date" name="certificate_date" id="certificate_date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('certificate_date', $achievement->certificate_date) }}">
+                                </div>
+
                                 <div class="md:col-span-2">
                                     <label for="news_link" class="block text-sm font-medium text-gray-700 mb-2">Link Berita</label>
                                     <input type="url" name="news_link" id="news_link" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" value="{{ old('news_link', $achievement->news_link) }}">
@@ -218,9 +241,15 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label for="certificate_file" class="block text-sm font-medium text-gray-700 mb-2">File Sertifikat</label>
+                                    <label for="certificate_file" class="block text-sm font-medium text-gray-700 mb-2">File Sertifikat (Saat ini: {!! $achievement->certificate_file ? '<a href="'.Storage::url($achievement->certificate_file).'" target="_blank" class="text-blue-500">Lihat File</a>' : 'Tidak ada' !!})</label>
                                     <p class="text-xs text-gray-500 mb-2">PDF Maksimal 5 MB</p>
                                     <input type="file" name="certificate_file" accept="application/pdf" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                </div>
+
+                                <div>
+                                    <label for="invitation_document_file" class="block text-sm font-medium text-gray-700 mb-2">Dokumen Undangan (Saat ini: {!! $achievement->invitation_document_file ? '<a href="'.Storage::url($achievement->invitation_document_file).'" target="_blank" class="text-blue-500">Lihat File</a>' : 'Tidak ada' !!})</label>
+                                    <p class="text-xs text-gray-500 mb-2">PDF Maksimal 5 MB</p>
+                                    <input type="file" name="invitation_document_file" accept="application/pdf" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                                 </div>
 
                                 <div>
@@ -250,6 +279,11 @@
                                 <h3 class="text-lg font-semibold text-gray-900">Informasi Pembimbing</h3>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="supervisor_name" class="block text-sm font-medium text-gray-700 mb-2">Nama Dosen</label>
+                                    <input type="text" name="supervisor_name" id="supervisor_name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" value="{{ old('supervisor_name', $achievement->supervisor_name) }}">
+                                </div>
+
                                 <div>
                                     <label for="supervisor_number" class="block text-sm font-medium text-gray-700 mb-2">NIDN Pembimbing</label>
                                     <input type="text" name="supervisor_number" id="supervisor_number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" value="{{ old('supervisor_number', $achievement->supervisor_number) }}">

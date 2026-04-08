@@ -71,22 +71,28 @@ class AchievementController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'study_program' => 'nullable|string|max:255',
+            'kategori' => 'nullable|string|max:255',
             'achievement_type' => 'nullable|in:Akademik,Non Akademik',
             'program_by' => 'nullable|in:Dikti,Non Dikti',
             'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
             'participation_type' => 'nullable|in:Individu,Kelompok',
-            'execution_model' => 'nullable|in:Daring,Luring',
+            'execution_model' => 'nullable|in:Daring,Luring/Hibrida',
             'event_name' => 'nullable|string|max:255',
+            'nama_cabang' => 'required|string|max:255',
+            'nama_penyelenggara' => 'required|string|max:255',
             'participant_count' => 'nullable|integer',
-            'university_count' => 'nullable|string',
+            'university_count' => 'nullable|integer',
             'nation_count' => 'nullable|string',
             'achievement_title' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'news_link' => 'nullable|url|max:255',
             'certificate_file' => 'nullable|file|mimes:pdf|max:5120',
+            'certificate_date' => 'nullable|date',
+            'invitation_document_file' => 'nullable|file|mimes:pdf|max:5120',
             'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
             'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
+            'supervisor_name' => 'nullable|string|max:255',
             'supervisor_number' => 'nullable|string|max:50',
             'supervisor_nuptk' => 'nullable|string|max:50',
             'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
@@ -97,6 +103,7 @@ class AchievementController extends Controller
 
         $data = $request->except([
             'certificate_file',
+            'invitation_document_file',
             'award_photo_file',
             'student_assignment_letter',
             'supervisor_assignment_letter',
@@ -105,6 +112,10 @@ class AchievementController extends Controller
         // Simpan file ke folder masing-masing
         if ($request->hasFile('certificate_file')) {
             $data['certificate_file'] = $request->file('certificate_file')->store('achievements/certificate', 'public');
+        }
+
+        if ($request->hasFile('invitation_document_file')) {
+            $data['invitation_document_file'] = $request->file('invitation_document_file')->store('achievements/invitation', 'public');
         }
 
         if ($request->hasFile('award_photo_file')) {
@@ -155,22 +166,28 @@ class AchievementController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'study_program' => 'nullable|string|max:255',
+            'kategori' => 'nullable|string|max:255',
             'achievement_type' => 'nullable|in:Akademik,Non Akademik',
             'program_by' => 'nullable|in:Dikti,Non Dikti',
             'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
             'participation_type' => 'nullable|in:Individu,Kelompok',
-            'execution_model' => 'nullable|in:Daring,Luring',
+            'execution_model' => 'nullable|in:Daring,Luring/Hibrida',
             'event_name' => 'nullable|string|max:255',
+            'nama_cabang' => 'required|string|max:255',
+            'nama_penyelenggara' => 'required|string|max:255',
             'participant_count' => 'nullable|integer',
-            'university_count' => 'nullable|string',
+            'university_count' => 'nullable|integer',
             'nation_count' => 'nullable|string',
             'achievement_title' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'news_link' => 'nullable|url|max:255',
             'certificate_file' => 'nullable|file|mimes:pdf|max:5120',
+            'certificate_date' => 'nullable|date',
+            'invitation_document_file' => 'nullable|file|mimes:pdf|max:5120',
             'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
             'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
+            'supervisor_name' => 'nullable|string|max:255',
             'supervisor_number' => 'nullable|string|max:50',
             'supervisor_nuptk' => 'nullable|string|max:50',
             'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
@@ -179,9 +196,9 @@ class AchievementController extends Controller
             'nama_ormawa' => 'nullable|string',
         ]);
 
-        $data = $request->except(['certificate_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter']);
+        $data = $request->except(['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter']);
 
-        foreach (['certificate_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter'] as $field) {
+        foreach (['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter'] as $field) {
             if ($request->hasFile($field)) {
                 // Hapus file lama jika ada
                 if ($achievement->$field) {
@@ -208,7 +225,7 @@ class AchievementController extends Controller
         $achievement = Achievement::findOrFail($id);
 
         // Hapus semua file terkait
-        foreach (['certificate_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter'] as $field) {
+        foreach (['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter'] as $field) {
             if ($achievement->$field) {
                 Storage::disk('public')->delete($achievement->$field);
             }

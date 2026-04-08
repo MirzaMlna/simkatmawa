@@ -381,6 +381,10 @@
                         </h4>
                         <div class="space-y-2 text-sm">
                             <div class="flex justify-between">
+                                <span class="text-gray-600">Kategori:</span>
+                                <span class="font-medium">{{ $achievement->kategori }}</span>
+                            </div>
+                            <div class="flex justify-between">
                                 <span class="text-gray-600">Jenis:</span>
                                 <span class="font-medium">{{ $achievement->achievement_type }}</span>
                             </div>
@@ -419,11 +423,19 @@
                                 <span class="font-medium">{{ $achievement->event_name }}</span>
                             </div>
                             <div class="flex justify-between">
+                                <span class="text-gray-600">Nama Cabang:</span>
+                                <span class="font-medium">{{ $achievement->nama_cabang }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Nama Penyelenggara:</span>
+                                <span class="font-medium">{{ $achievement->nama_penyelenggara }}</span>
+                            </div>
+                            <div class="flex justify-between">
                                 <span class="text-gray-600">Program Oleh:</span>
                                 <span class="font-medium">{{ $achievement->program_by }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-600">Model Pelaksanaan:</span>
+                                <span class="text-gray-600">Bentuk Pelaksanaan:</span>
                                 <span class="font-medium">{{ $achievement->execution_model }}</span>
                             </div>
                             <div class="flex justify-between">
@@ -433,6 +445,10 @@
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Periode:</span>
                                 <span class="font-medium">{{ $achievement->start_date }} s/d {{ $achievement->end_date }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Tanggal Sertifikat:</span>
+                                <span class="font-medium">{{ $achievement->certificate_date ?? '-' }}</span>
                             </div>
                         </div>
                     </div>
@@ -497,6 +513,17 @@
                                 @endif
                             </div>
                             <div class="flex items-center justify-between p-2 bg-white rounded border">
+                                <span class="text-sm text-gray-600">Dokumen Undangan:</span>
+                                @if ($achievement->invitation_document_file)
+                                    <a href="{{ asset('storage/' . $achievement->invitation_document_file) }}"
+                                        target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                        <i class="bi bi-download mr-1"></i>Download
+                                    </a>
+                                @else
+                                    <span class="text-red-500 text-sm">Tidak ada</span>
+                                @endif
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-white rounded border">
                                 <span class="text-sm text-gray-600">Foto Penghargaan:</span>
                                 @if ($achievement->award_photo_file)
                                     <a href="{{ asset('storage/' . $achievement->award_photo_file) }}"
@@ -539,6 +566,10 @@
                             <span>Informasi Tambahan</span>
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">Nama Pembimbing:</span>
+                                <p class="font-medium">{{ $achievement->supervisor_name ?? '-' }}</p>
+                            </div>
                             <div>
                                 <span class="text-gray-600">NIDN Pembimbing:</span>
                                 <p class="font-medium">{{ $achievement->supervisor_number ?? '-' }}</p>
