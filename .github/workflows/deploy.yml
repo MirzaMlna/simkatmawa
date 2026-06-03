@@ -39,7 +39,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         server: ${{ secrets.FTP_SERVER }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 2222 # Port default SFTP
+        port: 2222
         local_path: './'
         remote_path: '/' # UBAH INI: sesuaikan dengan folder tujuan di servermu
         sftpArgs: '-o ConnectTimeout=5'
