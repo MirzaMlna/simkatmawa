@@ -41,8 +41,8 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         port: 2222 # Port default SFTP
         local_path: './'
-        remote_path: '/public_html' # UBAH INI: sesuaikan dengan folder tujuan di servermu
+        remote_path: '/' # UBAH INI: sesuaikan dengan folder tujuan di servermu
         sftpArgs: '-o ConnectTimeout=5'
 
     - name: Run Database Migrations
-      run: curl -s "https://namadomain-kamu.com/run-migration?token=${{ secrets.MIGRATION_TOKEN }}"
+      run: curl -s "https://simkatmawa.uniska-bjm.ac.id/run-migration?token=${{ secrets.MIGRATION_TOKEN }}"
