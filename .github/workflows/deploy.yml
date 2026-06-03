@@ -42,6 +42,7 @@ jobs:
         port: 2222
         local_path: './'
         remote_path: '/' # UBAH INI: sesuaikan dengan folder tujuan di servermu
+        sftp_only: true
         sftpArgs: '-o ConnectTimeout=5'
 
     - name: Run Database Migrations
