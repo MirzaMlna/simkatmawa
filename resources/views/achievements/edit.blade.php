@@ -257,7 +257,7 @@
                                 <div>
                                     <label for="certificate_file" class="block text-sm font-medium text-gray-700 mb-2">File Sertifikat (Saat ini: {!! $achievement->certificate_file ? '<a href="'.Storage::url($achievement->certificate_file).'" target="_blank" class="text-blue-500">Lihat File</a>' : 'Tidak ada' !!})</label>
                                     <p class="text-xs text-gray-500 mb-2">PDF Maksimal 5 MB</p>
-                                    <input type="file" name="certificate_file" accept="application/pdf" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                    <input type="file" name="certificate_file" accept="application/pdf" @if (!$achievement->certificate_file) required @endif class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                                 </div>
 
                                 <div>
@@ -342,15 +342,26 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <div class="flex justify-end space-x-4 pt-6">
-                            <a href="{{ route('achievements.index') }}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2">
+                        <div class="flex flex-col gap-3 pt-6 sm:flex-row sm:justify-end">
+                            <a href="{{ route('achievements.index') }}" class="inline-flex items-center justify-center space-x-2 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50">
                                 <i class="bi bi-arrow-left"></i>
                                 <span>Kembali</span>
                             </a>
-                            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl">
-                                <i class="bi bi-check-circle"></i>
-                                <span>Perbarui Prestasi</span>
-                            </button>
+                            @if (auth()->user()->role === 'Mahasiswa')
+                                <button type="submit" name="form_action" value="draft" formnovalidate class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gray-600 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:bg-gray-700 hover:shadow-xl">
+                                    <i class="bi bi-save"></i>
+                                    <span>Simpan Draft</span>
+                                </button>
+                                <button type="submit" name="form_action" value="submit" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl">
+                                    <i class="bi bi-check-circle"></i>
+                                    <span>Submit ke Dosen</span>
+                                </button>
+                            @else
+                                <button type="submit" name="form_action" value="submit" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl">
+                                    <i class="bi bi-check-circle"></i>
+                                    <span>Simpan Perubahan</span>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>

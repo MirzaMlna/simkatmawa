@@ -41,7 +41,7 @@
                                 </p>
                             </div>
                             <p class="text-3xl md:text-4xl font-bold text-blue-900 mb-1">
-                                {{ \App\Models\Achievement::count() }}</p>
+                                {{ \App\Models\Achievement::where('status', '!=', 'Draft')->count() }}</p>
                             <p class="text-blue-700 text-sm font-medium">Total pencapaian</p>
                         </div>
                         <div
@@ -116,6 +116,27 @@
             </div>
         @else
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Draft Achievements -->
+                <div
+                    class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <div class="w-2 h-2 bg-gray-500 rounded-full"></div>
+                                <p class="text-sm font-semibold text-gray-800 uppercase tracking-wide">Draft</p>
+                            </div>
+                            <p class="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+                                {{ \App\Models\Achievement::where('identity_number', $user->identity_number)->where('status', 'Draft')->count() }}
+                            </p>
+                            <p class="text-gray-700 text-sm font-medium">Belum dikirim ke dosen</p>
+                        </div>
+                        <div
+                            class="w-14 h-14 bg-gray-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="bi bi-file-earmark text-2xl text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Pending Achievements -->
                 <div
                     class="group bg-white border border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">

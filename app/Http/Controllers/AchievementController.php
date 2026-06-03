@@ -32,7 +32,7 @@ class AchievementController extends Controller
             }
         } else {
             // Admin melihat semua data
-            $query = Achievement::query();
+            $query = Achievement::where('status', '!=', 'Draft');
 
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -50,7 +50,7 @@ class AchievementController extends Controller
         $achievements = $query->latest()->paginate(10)->withQueryString();
 
         // Data untuk admin
-        $achievementCount = auth()->user()->role === 'Admin' ? Achievement::count() : null;
+        $achievementCount = auth()->user()->role === 'Admin' ? Achievement::where('status', '!=', 'Draft')->count() : null;
         $pendingCount = auth()->user()->role === 'Admin' ? Achievement::where('status', 'Tunda')->count() : null;
 
         return view('achievements.index', compact('achievements', 'achievementCount', 'pendingCount'));
@@ -66,46 +66,12 @@ class AchievementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'identity_number' => 'required|string|max:50',
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'study_program' => 'nullable|string|max:255',
-            'kategori' => 'nullable|string|max:255',
-            'achievement_type' => 'nullable|in:Akademik,Non Akademik',
-            'program_by' => 'nullable|in:Dikti,Non Dikti',
-            'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
-            'participation_type' => 'nullable|in:Individu,Kelompok',
-            'team_members' => 'required_if:participation_type,Kelompok|array|min:1',
-            'team_members.*.identity_number' => 'required_if:participation_type,Kelompok|string|max:50',
-            'team_members.*.name' => 'required_if:participation_type,Kelompok|string|max:255',
-            'team_members.*.study_program' => 'nullable|string|max:255',
-            'execution_model' => 'nullable|in:Daring,Luring/Hibrida',
-            'event_name' => 'nullable|string|max:255',
-            'nama_cabang' => 'required|string|max:255',
-            'nama_penyelenggara' => 'required|string|max:255',
-            'participant_count' => 'nullable|integer',
-            'university_count' => 'nullable|integer',
-            'nation_count' => 'nullable|string',
-            'achievement_title' => 'nullable|string|max:255',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'news_link' => 'nullable|url|max:255',
-            'certificate_file' => 'nullable|file|mimes:pdf|max:5120',
-            'certificate_date' => 'nullable|date',
-            'invitation_document_file' => 'nullable|file|mimes:pdf|max:5120',
-            'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
-            'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
-            'supervisor_name' => 'nullable|string|max:255',
-            'supervisor_number' => 'nullable|string|max:50',
-            'supervisor_nuptk' => 'nullable|string|max:50',
-            'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
-            'keterangan' => 'nullable|string',
-            'perwakilan_uniska' => 'nullable|in:Ya,Tidak',
-            'nama_ormawa' => 'nullable|string',
-        ]);
+        $isSubmitting = $this->isSubmittingToReviewer($request);
+
+        $request->validate($this->achievementRules($request));
 
         $data = $request->except([
+            'form_action',
             'certificate_file',
             'invitation_document_file',
             'award_photo_file',
@@ -113,6 +79,7 @@ class AchievementController extends Controller
             'supervisor_assignment_letter',
         ]);
         $data['team_members'] = $this->teamMembersFromRequest($request);
+        $data['status'] = $isSubmitting ? 'Tunda' : 'Draft';
 
         // Simpan file ke folder masing-masing
         if ($request->hasFile('certificate_file')) {
@@ -137,7 +104,11 @@ class AchievementController extends Controller
 
         Achievement::create($data);
 
-        return redirect()->route('achievements.index')->with('success', 'Achievement data saved successfully.');
+        $message = auth()->user()->role === 'Mahasiswa'
+            ? ($isSubmitting ? 'Prestasi berhasil disubmit ke dosen.' : 'Prestasi berhasil disimpan sebagai draft.')
+            : 'Achievement data saved successfully.';
+
+        return redirect()->route('achievements.index')->with('success', $message);
     }
 
 
@@ -166,47 +137,16 @@ class AchievementController extends Controller
     {
         $achievement = Achievement::findOrFail($id);
 
-        $request->validate([
-            'identity_number' => 'required|string|max:50',
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'study_program' => 'nullable|string|max:255',
-            'kategori' => 'nullable|string|max:255',
-            'achievement_type' => 'nullable|in:Akademik,Non Akademik',
-            'program_by' => 'nullable|in:Dikti,Non Dikti',
-            'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
-            'participation_type' => 'nullable|in:Individu,Kelompok',
-            'team_members' => 'required_if:participation_type,Kelompok|array|min:1',
-            'team_members.*.identity_number' => 'required_if:participation_type,Kelompok|string|max:50',
-            'team_members.*.name' => 'required_if:participation_type,Kelompok|string|max:255',
-            'team_members.*.study_program' => 'nullable|string|max:255',
-            'execution_model' => 'nullable|in:Daring,Luring/Hibrida',
-            'event_name' => 'nullable|string|max:255',
-            'nama_cabang' => 'required|string|max:255',
-            'nama_penyelenggara' => 'required|string|max:255',
-            'participant_count' => 'nullable|integer',
-            'university_count' => 'nullable|integer',
-            'nation_count' => 'nullable|string',
-            'achievement_title' => 'nullable|string|max:255',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'news_link' => 'nullable|url|max:255',
-            'certificate_file' => 'nullable|file|mimes:pdf|max:5120',
-            'certificate_date' => 'nullable|date',
-            'invitation_document_file' => 'nullable|file|mimes:pdf|max:5120',
-            'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
-            'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
-            'supervisor_name' => 'nullable|string|max:255',
-            'supervisor_number' => 'nullable|string|max:50',
-            'supervisor_nuptk' => 'nullable|string|max:50',
-            'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
-            'keterangan' => 'nullable|string',
-            'perwakilan_uniska' => 'nullable|in:Ya,Tidak',
-            'nama_ormawa' => 'nullable|string',
-        ]);
+        $isSubmitting = $this->isSubmittingToReviewer($request);
 
-        $data = $request->except(['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter']);
+        $request->validate($this->achievementRules($request, $achievement));
+
+        $data = $request->except(['form_action', 'certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter']);
         $data['team_members'] = $this->teamMembersFromRequest($request);
+
+        if (auth()->user()->role === 'Mahasiswa') {
+            $data['status'] = $isSubmitting ? 'Tunda' : 'Draft';
+        }
 
         foreach (['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter'] as $field) {
             if ($request->hasFile($field)) {
@@ -224,7 +164,11 @@ class AchievementController extends Controller
 
         $achievement->update($data);
 
-        return redirect()->route('achievements.index')->with('success', 'Achievement data updated successfully.');
+        $message = auth()->user()->role === 'Mahasiswa'
+            ? ($isSubmitting ? 'Prestasi berhasil disubmit ke dosen.' : 'Perubahan draft berhasil disimpan.')
+            : 'Achievement data updated successfully.';
+
+        return redirect()->route('achievements.index')->with('success', $message);
     }
 
     /**
@@ -251,7 +195,7 @@ class AchievementController extends Controller
      */
     public function updateStatus($id, $status)
     {
-        $validStatuses = ['Tunda', 'Diterima'];
+        $validStatuses = ['Tunda', 'Diterima', 'Ditolak'];
 
         if (!in_array($status, $validStatuses)) {
             return back()->with('error', 'Invalid status.');
@@ -279,5 +223,57 @@ class AchievementController extends Controller
             ->filter(fn ($member) => $member['identity_number'] !== '' || $member['name'] !== '' || $member['study_program'] !== '')
             ->values()
             ->all();
+    }
+
+    private function isSubmittingToReviewer(Request $request): bool
+    {
+        return $request->input('form_action') === 'submit';
+    }
+
+    private function achievementRules(Request $request, ?Achievement $achievement = null): array
+    {
+        $isSubmitting = $this->isSubmittingToReviewer($request);
+        $isGroupSubmission = $isSubmitting && $request->input('participation_type') === 'Kelompok';
+        $certificateRule = ($isSubmitting && !$achievement?->certificate_file) ? 'required' : 'nullable';
+
+        return [
+            'identity_number' => 'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'study_program' => 'nullable|string|max:255',
+            'kategori' => 'nullable|string|max:255',
+            'achievement_type' => 'nullable|in:Akademik,Non Akademik',
+            'program_by' => 'nullable|in:Dikti,Non Dikti',
+            'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
+            'participation_type' => 'nullable|in:Individu,Kelompok',
+            'team_members' => [($isGroupSubmission ? 'required' : 'nullable'), 'array', 'min:1'],
+            'team_members.*.identity_number' => [($isGroupSubmission ? 'required' : 'nullable'), 'string', 'max:50'],
+            'team_members.*.name' => [($isGroupSubmission ? 'required' : 'nullable'), 'string', 'max:255'],
+            'team_members.*.study_program' => 'nullable|string|max:255',
+            'execution_model' => ($isSubmitting ? 'required' : 'nullable') . '|in:Daring,Luring/Hibrida',
+            'event_name' => 'nullable|string|max:255',
+            'nama_cabang' => ($isSubmitting ? 'required' : 'nullable') . '|string|max:255',
+            'nama_penyelenggara' => ($isSubmitting ? 'required' : 'nullable') . '|string|max:255',
+            'participant_count' => 'nullable|integer',
+            'university_count' => 'nullable|integer',
+            'nation_count' => 'nullable|string',
+            'achievement_title' => 'nullable|string|max:255',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'news_link' => 'nullable|url|max:255',
+            'certificate_file' => "{$certificateRule}|file|mimes:pdf|max:5120",
+            'certificate_date' => 'nullable|date',
+            'invitation_document_file' => 'nullable|file|mimes:pdf|max:5120',
+            'award_photo_file' => 'nullable|file|mimes:pdf|max:5120',
+            'student_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
+            'supervisor_name' => 'nullable|string|max:255',
+            'supervisor_number' => 'nullable|string|max:50',
+            'supervisor_nuptk' => 'nullable|string|max:50',
+            'supervisor_assignment_letter' => 'nullable|file|mimes:pdf|max:5120',
+            'keterangan' => 'nullable|string',
+            'perwakilan_uniska' => 'nullable|in:Ya,Tidak',
+            'nama_ormawa' => 'nullable|string',
+            'form_action' => 'required|in:draft,submit',
+        ];
     }
 }

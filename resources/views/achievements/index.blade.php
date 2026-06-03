@@ -192,7 +192,11 @@
                                         </td>
                                         <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-900">{{ $achievement->achievement_title }}</td>
                                         <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
-                                            @if ($achievement->status == 'Tunda')
+                                            @if ($achievement->status == 'Draft')
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    <i class="bi bi-file-earmark mr-1"></i>Draft
+                                                </span>
+                                            @elseif ($achievement->status == 'Tunda')
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                                                     <i class="bi bi-clock mr-1"></i>Menunggu
                                                 </span>
@@ -323,7 +327,7 @@
             @if (Auth::user()->role === 'Mahasiswa')
                 <div class="px-4 py-3 text-sm text-gray-500 bg-gray-50 border-t border-gray-200">
                     <i class="bi bi-info-circle mr-1"></i>
-                    Jika data belum lengkap, simpan dulu dan lengkapi nanti. Data tidak akan dikirim ke Admin sampai semua kolom wajib terisi!
+                    Jika data belum lengkap, klik Simpan Draft. Data baru dikirim ke dosen setelah klik Submit ke Dosen dan semua kolom wajib lengkap.
                 </div>
             @endif
         </div>
@@ -398,7 +402,9 @@
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Status:</span>
                                 <span class="font-medium">
-                                    @if ($achievement->status == 'Tunda')
+                                    @if ($achievement->status == 'Draft')
+                                        <span class="text-gray-600">Draft</span>
+                                    @elseif ($achievement->status == 'Tunda')
                                         <span class="text-orange-600">Menunggu</span>
                                     @elseif($achievement->status == 'Diterima')
                                         <span class="text-green-600">Diterima</span>

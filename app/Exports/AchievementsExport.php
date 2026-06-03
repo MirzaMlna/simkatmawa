@@ -17,7 +17,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
 
     public function collection()
     {
-        return Achievement::all();
+        return Achievement::where('status', '!=', 'Draft')->get();
     }
 
     public function headings(): array
@@ -108,7 +108,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
 
     public function styles(Worksheet $sheet)
     {
-        $dataCount = Achievement::count() + 1; // +1 for heading
+        $dataCount = Achievement::where('status', '!=', 'Draft')->count() + 1; // +1 for heading
         $range = "A1:AK{$dataCount}";
 
         // Apply border ke seluruh cell
