@@ -150,9 +150,23 @@
                                     <label for="participation_type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Partisipasi</label>
                                     <select name="participation_type" id="participation_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                         <option value="">-- Pilih Partisipasi --</option>
-                                        <option value="Individu">Individu</option>
-                                        <option value="Kelompok">Kelompok</option>
+                                        <option value="Individu" {{ old('participation_type') == 'Individu' ? 'selected' : '' }}>Individu</option>
+                                        <option value="Kelompok" {{ old('participation_type') == 'Kelompok' ? 'selected' : '' }}>Kelompok</option>
                                     </select>
+                                </div>
+
+                                <div id="team-members-section" class="hidden md:col-span-2 rounded-xl border border-blue-200 bg-white p-4">
+                                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-gray-900">Anggota Kelompok</h4>
+                                        </div>
+                                        <button type="button" id="add-team-member" class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700">
+                                            <i class="bi bi-plus-circle"></i>
+                                            <span>Tambah Anggota</span>
+                                        </button>
+                                    </div>
+
+                                    <div id="team-members-list" class="mt-4 space-y-4"></div>
                                 </div>
 
                                 <div>
@@ -340,4 +354,91 @@
             </form>
         </div>
     </div>
+    @php
+        $initialTeamMembers = old('team_members', [
+            ['identity_number' => '', 'name' => '', 'study_program' => ''],
+        ]);
+    @endphp
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const participationType = document.getElementById('participation_type');
+            const section = document.getElementById('team-members-section');
+            const list = document.getElementById('team-members-list');
+            const addButton = document.getElementById('add-team-member');
+            const initialMembers = {{ \Illuminate\Support\Js::from($initialTeamMembers) }};
+            let memberIndex = 0;
+
+            function createMemberRow(member = {}) {
+                const rowIndex = memberIndex++;
+                const row = document.createElement('div');
+                row.className = 'rounded-lg border border-gray-200 bg-gray-50 p-4';
+                row.innerHTML = `
+                    <div class="mb-3 flex items-center justify-between gap-3">
+                        <span class="text-sm font-semibold text-gray-800">Anggota ${rowIndex + 1}</span>
+                        <button type="button" class="remove-team-member inline-flex items-center gap-1 rounded-lg bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 transition-colors hover:bg-red-200">
+                            <i class="bi bi-trash"></i>
+                            <span>Hapus</span>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">NPM/NIDN <span class="text-red-500">*</span></label>
+                            <input type="text" name="team_members[${rowIndex}][identity_number]" value="${escapeHtml(member.identity_number || '')}" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Nama Anggota <span class="text-red-500">*</span></label>
+                            <input type="text" name="team_members[${rowIndex}][name]" value="${escapeHtml(member.name || '')}" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-medium text-gray-700">Program Studi</label>
+                            <input type="text" name="team_members[${rowIndex}][study_program]" value="${escapeHtml(member.study_program || '')}" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                `;
+
+                row.querySelector('.remove-team-member').addEventListener('click', () => {
+                    row.remove();
+                    if (list.children.length === 0) {
+                        createMemberRow();
+                    }
+                    refreshMemberLabels();
+                });
+
+                list.appendChild(row);
+                refreshTeamMemberInputs();
+            }
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function refreshMemberLabels() {
+                Array.from(list.children).forEach((row, index) => {
+                    row.querySelector('span.text-sm').textContent = `Anggota ${index + 1}`;
+                });
+            }
+
+            function refreshTeamMemberInputs() {
+                const isGroup = participationType.value === 'Kelompok';
+                section.classList.toggle('hidden', !isGroup);
+                section.querySelectorAll('input').forEach((input) => {
+                    input.disabled = !isGroup;
+                });
+
+                if (isGroup && list.children.length === 0) {
+                    createMemberRow();
+                }
+            }
+
+            initialMembers.forEach((member) => createMemberRow(member));
+            addButton.addEventListener('click', () => createMemberRow());
+            participationType.addEventListener('change', refreshTeamMemberInputs);
+            refreshTeamMemberInputs();
+        });
+    </script>
 </x-app-layout>

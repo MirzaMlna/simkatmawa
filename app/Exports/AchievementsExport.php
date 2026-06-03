@@ -33,6 +33,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             'Diselenggarakan Oleh',
             'Tingkat',
             'Jenis Partisipasi',
+            'Anggota Kelompok',
             'Model Pelaksanaan',
             'Nama Kegiatan',
             'Nama Cabang',
@@ -75,6 +76,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             $a->program_by,
             $a->achievement_level,
             $a->participation_type,
+            $this->formatTeamMembers($a->team_members),
             $a->execution_model,
             $a->event_name,
             $a->nama_cabang,
@@ -107,7 +109,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
     public function styles(Worksheet $sheet)
     {
         $dataCount = Achievement::count() + 1; // +1 for heading
-        $range = "A1:AJ{$dataCount}";
+        $range = "A1:AK{$dataCount}";
 
         // Apply border ke seluruh cell
         $sheet->getStyle($range)->applyFromArray([
@@ -120,7 +122,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
         ]);
 
         // Style heading
-        $sheet->getStyle('A1:AJ1')->applyFromArray([
+        $sheet->getStyle('A1:AK1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'size' => 12,
@@ -133,5 +135,22 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
         ]);
 
         return [];
+    }
+
+    private function formatTeamMembers(?array $members): string
+    {
+        if (empty($members)) {
+            return '-';
+        }
+
+        return collect($members)
+            ->map(function ($member, $index) {
+                $identityNumber = $member['identity_number'] ?? '-';
+                $name = $member['name'] ?? '-';
+                $studyProgram = $member['study_program'] ?? '-';
+
+                return ($index + 1) . ". {$identityNumber} - {$name} ({$studyProgram})";
+            })
+            ->implode("\n");
     }
 }

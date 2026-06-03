@@ -76,6 +76,10 @@ class AchievementController extends Controller
             'program_by' => 'nullable|in:Dikti,Non Dikti',
             'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
             'participation_type' => 'nullable|in:Individu,Kelompok',
+            'team_members' => 'required_if:participation_type,Kelompok|array|min:1',
+            'team_members.*.identity_number' => 'required_if:participation_type,Kelompok|string|max:50',
+            'team_members.*.name' => 'required_if:participation_type,Kelompok|string|max:255',
+            'team_members.*.study_program' => 'nullable|string|max:255',
             'execution_model' => 'nullable|in:Daring,Luring/Hibrida',
             'event_name' => 'nullable|string|max:255',
             'nama_cabang' => 'required|string|max:255',
@@ -108,6 +112,7 @@ class AchievementController extends Controller
             'student_assignment_letter',
             'supervisor_assignment_letter',
         ]);
+        $data['team_members'] = $this->teamMembersFromRequest($request);
 
         // Simpan file ke folder masing-masing
         if ($request->hasFile('certificate_file')) {
@@ -171,6 +176,10 @@ class AchievementController extends Controller
             'program_by' => 'nullable|in:Dikti,Non Dikti',
             'achievement_level' => 'nullable|in:Kabupaten / Kota,Provinsi,Nasional,Internasional',
             'participation_type' => 'nullable|in:Individu,Kelompok',
+            'team_members' => 'required_if:participation_type,Kelompok|array|min:1',
+            'team_members.*.identity_number' => 'required_if:participation_type,Kelompok|string|max:50',
+            'team_members.*.name' => 'required_if:participation_type,Kelompok|string|max:255',
+            'team_members.*.study_program' => 'nullable|string|max:255',
             'execution_model' => 'nullable|in:Daring,Luring/Hibrida',
             'event_name' => 'nullable|string|max:255',
             'nama_cabang' => 'required|string|max:255',
@@ -197,6 +206,7 @@ class AchievementController extends Controller
         ]);
 
         $data = $request->except(['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter']);
+        $data['team_members'] = $this->teamMembersFromRequest($request);
 
         foreach (['certificate_file', 'invitation_document_file', 'award_photo_file', 'student_assignment_letter', 'supervisor_assignment_letter'] as $field) {
             if ($request->hasFile($field)) {
@@ -252,5 +262,22 @@ class AchievementController extends Controller
         $achievement->save();
 
         return back()->with('success', "Status updated to $status.");
+    }
+
+    private function teamMembersFromRequest(Request $request): ?array
+    {
+        if ($request->input('participation_type') !== 'Kelompok') {
+            return null;
+        }
+
+        return collect($request->input('team_members', []))
+            ->map(fn ($member) => [
+                'identity_number' => trim((string) ($member['identity_number'] ?? '')),
+                'name' => trim((string) ($member['name'] ?? '')),
+                'study_program' => trim((string) ($member['study_program'] ?? '')),
+            ])
+            ->filter(fn ($member) => $member['identity_number'] !== '' || $member['name'] !== '' || $member['study_program'] !== '')
+            ->values()
+            ->all();
     }
 }

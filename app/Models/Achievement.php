@@ -23,6 +23,7 @@ class Achievement extends Model
         'program_by',
         'achievement_level',
         'participation_type',
+        'team_members',
         'execution_model',
         'event_name',
         'nama_cabang',
@@ -47,5 +48,9 @@ class Achievement extends Model
         'keterangan',
         'perwakilan_uniska',
         'nama_ormawa',
+    ];
+
+    protected $casts = [
+        'team_members' => 'array',
     ];
 }

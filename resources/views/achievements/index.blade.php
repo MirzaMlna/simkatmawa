@@ -452,6 +452,39 @@
                         </div>
                     </div>
 
+                    @if ($achievement->participation_type === 'Kelompok')
+                        <div class="bg-gray-50 rounded-lg p-4 lg:col-span-2">
+                            <h4 class="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+                                <i class="bi bi-people text-blue-600"></i>
+                                <span>Anggota Kelompok</span>
+                            </h4>
+                            @if (!empty($achievement->team_members))
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                                        <thead>
+                                            <tr class="text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
+                                                <th class="px-3 py-2">NPM/NIDN</th>
+                                                <th class="px-3 py-2">Nama</th>
+                                                <th class="px-3 py-2">Program Studi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-200 bg-white">
+                                            @foreach ($achievement->team_members as $member)
+                                                <tr>
+                                                    <td class="px-3 py-2 font-mono text-gray-900">{{ $member['identity_number'] ?? '-' }}</td>
+                                                    <td class="px-3 py-2 font-medium text-gray-900">{{ $member['name'] ?? '-' }}</td>
+                                                    <td class="px-3 py-2 text-gray-700">{{ $member['study_program'] ?? '-' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <span class="text-gray-500 italic">Belum ada anggota kelompok</span>
+                            @endif
+                        </div>
+                    @endif
+
                     <!-- Statistics -->
                     <div class="bg-gray-50 rounded-lg p-4">
                         <h4 class="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
