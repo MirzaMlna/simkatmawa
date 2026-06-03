@@ -1,0 +1,48 @@
+name: Deploy to FTP
+
+on:
+  push:
+    branches:
+      - main # Akan berjalan otomatis setiap ada push ke branch main
+
+jobs:
+  web-deploy:
+    name: Deploy to Hosting
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # Sesuaikan dengan versi PHP kamu
+
+    - name: Install Composer Dependencies
+      run: composer install --no-dev --optimize-autoloader
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install NPM Dependencies & Build
+      run: |
+        npm install
+        npm run build
+
+    - name: Sync files via SFTP
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      with:
+        username: ${{ secrets.FTP_USERNAME }}
+        server: ${{ secrets.FTP_SERVER }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 2222 # Port default SFTP
+        local_path: './'
+        remote_path: '/public_html' # UBAH INI: sesuaikan dengan folder tujuan di servermu
+        sftpArgs: '-o ConnectTimeout=5'
+
+    - name: Run Database Migrations
+      run: curl -s "https://namadomain-kamu.com/run-migration?token=${{ secrets.MIGRATION_TOKEN }}"

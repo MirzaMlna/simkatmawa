@@ -41,4 +41,18 @@ Route::middleware('auth')->group(function () {
     // Achievement End
 });
 
+Route::get('/run-migration', function (\Illuminate\Http\Request $request) {
+    // Keamanan: Cek token agar tidak bisa diakses orang lain
+    if ($request->token !== env('MIGRATION_TOKEN')) {
+        abort(403, 'Unauthorized');
+    }
+
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return 'Migration berhasil dijalankan otomatis oleh GitHub Actions! <br> Output: ' . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
 require __DIR__ . '/auth.php';
