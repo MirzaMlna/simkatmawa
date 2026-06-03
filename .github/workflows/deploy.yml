@@ -33,7 +33,30 @@ jobs:
         npm install
         npm run build
 
-    - name: Sync files via LFTP (Fast SFTP)
+    - name: Prepare Release ZIP
+      run: |
+        zip -q -r release.zip . -x "*.git*" "*node_modules*" "*tests*" "storage/*" ".env*"
+
+    - name: Generate Unzip Script
+      run: |
+        cat << 'EOF' > public/unzip-deploy.php
+        <?php
+        if (($_GET['token'] ?? '') !== '${{ secrets.MIGRATION_TOKEN }}') die('Unauthorized');
+        $zipFile = __DIR__ . '/../release.zip';
+        if (!file_exists($zipFile)) $zipFile = __DIR__ . '/release.zip';
+        if (file_exists($zipFile)) {
+            $zip = new ZipArchive;
+            if ($zip->open($zipFile) === TRUE) {
+                $zip->extractTo(dirname($zipFile));
+                $zip->close();
+                unlink($zipFile);
+                echo "Unzip OK";
+            } else die("Unzip Failed");
+        } else echo "No ZIP";
+        unlink(__FILE__);
+        EOF
+
+    - name: Upload ZIP via LFTP
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -44,16 +67,12 @@ jobs:
         set sftp:auto-confirm yes;
         set ftp:ssl-allow no;
         open sftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_SERVER:2222;
-        mirror -R -v --parallel=10 --only-newer \
-          --exclude-glob .git/ \
-          --exclude-glob .github/ \
-          --exclude-glob node_modules/ \
-          --exclude-glob tests/ \
-          --exclude-glob storage/ \
-          --exclude .env.example \
-          --exclude .gitignore \
-          ./ /
+        put release.zip -o release.zip;
+        put public/unzip-deploy.php -o public/unzip-deploy.php;
         "
+
+    - name: Extract ZIP on Server
+      run: curl -s "https://simkatmawa.uniska-bjm.ac.id/unzip-deploy.php?token=${{ secrets.MIGRATION_TOKEN }}"
 
     - name: Run Database Migrations
       run: curl -s "https://simkatmawa.uniska-bjm.ac.id/run-migration?token=${{ secrets.MIGRATION_TOKEN }}"
