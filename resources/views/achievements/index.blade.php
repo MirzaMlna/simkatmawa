@@ -604,8 +604,6 @@
             </div>
         </div>
     @endforeach
-                    </tbody>
-                </table>
 
     <script>
         function showModal(id) {
