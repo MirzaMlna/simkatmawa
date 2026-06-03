@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -96,5 +97,24 @@ class UserController extends Controller
             'is_approved' => !$user->is_approved,
         ]);
         return redirect()->route('users.index')->with('success', 'Status verifikasi berhasil diperbarui.');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if ($user->role !== 'Mahasiswa') {
+            return back()->withErrors([
+                'reset_password' => 'Password hanya bisa direset untuk akun mahasiswa.',
+            ]);
+        }
+
+        $validated = $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('success', "Password {$user->name} berhasil direset.");
     }
 }

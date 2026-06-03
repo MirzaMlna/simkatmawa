@@ -29,9 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // User Start
     Route::resource('users', UserController::class)->middleware(['auth', 'role:Admin']);
-    Route::resource('users', UserController::class)->middleware(['auth', 'role:Admin']);
+    Route::patch('/users/{user}/reset-password', [UserController::class, 'resetPassword'])
+        ->middleware(['auth', 'role:Admin'])
+        ->name('users.reset-password');
     Route::resource('achievements', AchievementController::class);
-    Route::post('/user/{id}/approve', [UserController::class, 'approve'])->name('user.approve');
+    Route::post('/user/{id}/approve', [UserController::class, 'approve'])
+        ->middleware(['auth', 'role:Admin'])
+        ->name('user.approve');
     // User End
     // Achievement Start
     Route::patch('/achievements/{id}/status/{status}', [AchievementController::class, 'updateStatus'])->name('achievements.updateStatus');

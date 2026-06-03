@@ -15,6 +15,23 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @if (session('success'))
+            <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                <p class="font-semibold">Ada data yang perlu diperbaiki:</p>
+                <ul class="mt-2 list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="p-6">
                 <div class="overflow-x-auto">
@@ -114,6 +131,24 @@
                                                     </button>
                                                 </form>
 
+                                                @if($user->role === 'Mahasiswa')
+                                                    <button type="button"
+                                                        class="inline-flex items-center px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg text-xs font-medium transition-colors"
+                                                        title="Reset Password" onclick="resetPassword({{ $user->id }})">
+                                                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14H8v2H6v2H2v-4.586l4.257-4.257A6 6 0 1118 8zm-6-4a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd"></path>
+                                                        </svg>
+                                                        Reset
+                                                    </button>
+
+                                                    <form id="reset-password-form-{{ $user->id }}" action="{{ route('users.reset-password', $user) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="password">
+                                                        <input type="hidden" name="password_confirmation">
+                                                    </form>
+                                                @endif
+
                                                 <button type="button" 
                                                     class="inline-flex items-center px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-medium transition-colors"
                                                     title="Hapus" onclick="deleteUser({{ $user->id }})">
@@ -168,6 +203,58 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('delete-form-' + userId).submit();
+                }
+            });
+        }
+
+        function resetPassword(userId) {
+            Swal.fire({
+                title: 'Reset password mahasiswa',
+                html: `
+                    <div class="space-y-3 text-left">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Password baru</label>
+                            <input id="reset-password" type="password" class="swal2-input" style="margin:0;width:100%;" autocomplete="new-password">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi password</label>
+                            <input id="reset-password-confirmation" type="password" class="swal2-input" style="margin:0;width:100%;" autocomplete="new-password">
+                        </div>
+                    </div>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Reset Password',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                focusConfirm: false,
+                preConfirm: () => {
+                    const password = document.getElementById('reset-password').value;
+                    const passwordConfirmation = document.getElementById('reset-password-confirmation').value;
+
+                    if (!password || !passwordConfirmation) {
+                        Swal.showValidationMessage('Password dan konfirmasi wajib diisi.');
+                        return false;
+                    }
+
+                    if (password.length < 6) {
+                        Swal.showValidationMessage('Password minimal 6 karakter.');
+                        return false;
+                    }
+
+                    if (password !== passwordConfirmation) {
+                        Swal.showValidationMessage('Konfirmasi password tidak cocok.');
+                        return false;
+                    }
+
+                    return { password, passwordConfirmation };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById('reset-password-form-' + userId);
+                    form.querySelector('input[name="password"]').value = result.value.password;
+                    form.querySelector('input[name="password_confirmation"]').value = result.value.passwordConfirmation;
+                    form.submit();
                 }
             });
         }
