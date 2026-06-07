@@ -11,18 +11,10 @@
                     <p class="text-gray-600 mt-1 text-sm sm:text-base">Kelola dan pantau prestasi akademik</p>
                 </div>
                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 flex-shrink-0">
-                    @if(Auth::user()->role !== 'Admin')
-                        <a href="{{ route('achievements.create') }}" class="inline-flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md text-sm">
-                            <i class="bi bi-plus-circle"></i>
-                            <span>Tambah Prestasi</span>
-                        </a>
-                    @endif
-                    @if(Auth::user()->role == 'Admin')
-                        <a href="{{ url('/achievements.export') }}" class="inline-flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md text-sm">
-                            <i class="bi bi-file-earmark-excel"></i>
-                            <span>Export Excel</span>
-                        </a>
-                    @endif
+                    <a href="{{ route('achievements.create') }}" class="inline-flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md text-sm">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Tambah Prestasi</span>
+                    </a>
                 </div>
             </div>
         </div>

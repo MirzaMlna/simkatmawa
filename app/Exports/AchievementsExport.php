@@ -80,7 +80,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             $a->participation_type,
             $this->countTeamMembers($a->team_members),
             $this->formatTeamMembers($a->team_members),
-            $a->execution_model,
+            $a->execution_model, 
             $a->event_name,
             $a->nama_cabang,
             $a->nama_penyelenggara,
