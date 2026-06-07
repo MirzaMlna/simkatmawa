@@ -127,12 +127,6 @@
                         <i class="bi bi-arrow-clockwise"></i>
                         <span>Reset Filter</span>
                     </a>
-                    @if(Auth::user()->role == 'Admin')
-                        <a href="{{ url('/achievements.export') }}" class="inline-flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 sm:px-5 rounded-lg transition-all duration-200 text-sm">
-                            <i class="bi bi-download"></i>
-                            <span>Export Excel</span>
-                        </a>
-                    @endif
                 </div>
             </form>
 
@@ -140,6 +134,18 @@
 
         <!-- Data Table Section -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="flex flex-col gap-3 border-b border-gray-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900">Tabel Prestasi</h2>
+                    <p class="text-sm text-gray-500">Data prestasi mahasiswa yang sesuai dengan filter aktif.</p>
+                </div>
+                @if(Auth::user()->role == 'Admin')
+                    <a href="{{ route('achievements.export') }}" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-green-700">
+                        <i class="bi bi-download"></i>
+                        <span>Export Excel</span>
+                    </a>
+                @endif
+            </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">

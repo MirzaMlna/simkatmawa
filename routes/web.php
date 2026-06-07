@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/achievements/{id}/status/{status}', [AchievementController::class, 'updateStatus'])->name('achievements.updateStatus');
     Route::get('/achievements.export', function () {
         return Excel::download(new AchievementsExport, 'prestasi_mahasiswa.xlsx');
-    });
+    })->middleware(['auth', 'role:Admin'])->name('achievements.export');
     // Achievement End
 });
 
