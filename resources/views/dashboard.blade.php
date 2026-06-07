@@ -41,7 +41,7 @@
                                 </p>
                             </div>
                             <p class="text-3xl md:text-4xl font-bold text-blue-900 mb-1">
-                                {{ \App\Models\Achievement::where('status', '!=', 'Draft')->count() }}</p>
+                                {{ \App\Models\Achievement::count() }}</p>
                             <p class="text-blue-700 text-sm font-medium">Total pencapaian</p>
                         </div>
                         <div
@@ -58,12 +58,11 @@
                         <div class="flex-1">
                             <div class="flex items-center space-x-2 mb-2">
                                 <div class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                                <p class="text-sm font-semibold text-orange-800 uppercase tracking-wide">Menunggu
-                                    Verifikasi</p>
+                                <p class="text-sm font-semibold text-orange-800 uppercase tracking-wide">Submit</p>
                             </div>
                             <p class="text-3xl md:text-4xl font-bold text-orange-900 mb-1">
                                 {{ \App\Models\Achievement::where('status', 'Tunda')->count() }}</p>
-                            <p class="text-orange-700 text-sm font-medium">Dalam proses review</p>
+                            <p class="text-orange-700 text-sm font-medium">Sudah disubmit</p>
                         </div>
                         <div
                             class="w-14 h-14 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -128,7 +127,7 @@
                             <p class="text-3xl md:text-4xl font-bold text-gray-900 mb-1">
                                 {{ \App\Models\Achievement::where('identity_number', $user->identity_number)->where('status', 'Draft')->count() }}
                             </p>
-                            <p class="text-gray-700 text-sm font-medium">Belum dikirim ke dosen</p>
+                            <p class="text-gray-700 text-sm font-medium">Belum disubmit</p>
                         </div>
                         <div
                             class="w-14 h-14 bg-gray-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -144,13 +143,12 @@
                         <div class="flex-1">
                             <div class="flex items-center space-x-2 mb-2">
                                 <div class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                                <p class="text-sm font-semibold text-orange-800 uppercase tracking-wide">Menunggu
-                                    Verifikasi</p>
+                                <p class="text-sm font-semibold text-orange-800 uppercase tracking-wide">Submit</p>
                             </div>
                             <p class="text-3xl md:text-4xl font-bold text-orange-900 mb-1">
                                 {{ \App\Models\Achievement::where('identity_number', $user->identity_number)->where('status', 'Tunda')->count() }}
                             </p>
-                            <p class="text-orange-700 text-sm font-medium">Dalam proses review</p>
+                            <p class="text-orange-700 text-sm font-medium">Sudah disubmit</p>
                         </div>
                         <div
                             class="w-14 h-14 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -206,7 +204,7 @@
                                     <span
                                         class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-700 border border-blue-500">
                                         <i
-                                            class="bi {{ $user->role === 'admin' ? 'bi-shield-check' : 'bi-person-circle' }} mr-1.5"></i>
+                                            class="bi {{ $user->role === 'Admin' ? 'bi-shield-check' : 'bi-person-circle' }} mr-1.5"></i>
                                         {{ ucfirst($user->role) }}
                                     </span>
                                 </div>

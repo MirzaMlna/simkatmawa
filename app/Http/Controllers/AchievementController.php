@@ -18,6 +18,8 @@ class AchievementController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $status = $request->input('status');
+        $tingkat = $request->input('tingkat');
 
         if (auth()->user()->role === 'Mahasiswa') {
             $query = Achievement::where('identity_number', auth()->user()->identity_number);
@@ -32,7 +34,7 @@ class AchievementController extends Controller
             }
         } else {
             // Admin melihat semua data
-            $query = Achievement::where('status', '!=', 'Draft');
+            $query = Achievement::query();
 
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -45,15 +47,24 @@ class AchievementController extends Controller
                         ->orWhere('status', 'like', "%{$search}%");
                 });
             }
+
+            if (in_array($status, ['Draft', 'Tunda', 'Diterima', 'Ditolak'], true)) {
+                $query->where('status', $status);
+            }
+
+            if (in_array($tingkat, ['Kabupaten / Kota', 'Provinsi', 'Nasional', 'Internasional'], true)) {
+                $query->where('achievement_level', $tingkat);
+            }
         }
 
         $achievements = $query->latest()->paginate(10)->withQueryString();
 
         // Data untuk admin
-        $achievementCount = auth()->user()->role === 'Admin' ? Achievement::where('status', '!=', 'Draft')->count() : null;
+        $achievementCount = auth()->user()->role === 'Admin' ? Achievement::count() : null;
         $pendingCount = auth()->user()->role === 'Admin' ? Achievement::where('status', 'Tunda')->count() : null;
+        $draftCount = auth()->user()->role === 'Admin' ? Achievement::where('status', 'Draft')->count() : null;
 
-        return view('achievements.index', compact('achievements', 'achievementCount', 'pendingCount'));
+        return view('achievements.index', compact('achievements', 'achievementCount', 'pendingCount', 'draftCount'));
     }
 
     public function create()
@@ -105,7 +116,7 @@ class AchievementController extends Controller
         Achievement::create($data);
 
         $message = auth()->user()->role === 'Mahasiswa'
-            ? ($isSubmitting ? 'Prestasi berhasil disubmit ke dosen.' : 'Prestasi berhasil disimpan sebagai draft.')
+            ? ($isSubmitting ? 'Prestasi berhasil disubmit.' : 'Prestasi berhasil disimpan sebagai draft.')
             : 'Achievement data saved successfully.';
 
         return redirect()->route('achievements.index')->with('success', $message);
@@ -165,7 +176,7 @@ class AchievementController extends Controller
         $achievement->update($data);
 
         $message = auth()->user()->role === 'Mahasiswa'
-            ? ($isSubmitting ? 'Prestasi berhasil disubmit ke dosen.' : 'Perubahan draft berhasil disimpan.')
+            ? ($isSubmitting ? 'Prestasi berhasil disubmit.' : 'Perubahan draft berhasil disimpan.')
             : 'Achievement data updated successfully.';
 
         return redirect()->route('achievements.index')->with('success', $message);
@@ -195,7 +206,7 @@ class AchievementController extends Controller
      */
     public function updateStatus($id, $status)
     {
-        $validStatuses = ['Tunda', 'Diterima', 'Ditolak'];
+        $validStatuses = ['Draft', 'Tunda', 'Diterima', 'Ditolak'];
 
         if (!in_array($status, $validStatuses)) {
             return back()->with('error', 'Invalid status.');
@@ -205,7 +216,7 @@ class AchievementController extends Controller
         $achievement->status = $status;
         $achievement->save();
 
-        return back()->with('success', "Status updated to $status.");
+        return back()->with('success', 'Status berhasil diubah menjadi ' . $this->statusLabel($status) . '.');
     }
 
     private function teamMembersFromRequest(Request $request): ?array
@@ -228,6 +239,11 @@ class AchievementController extends Controller
     private function isSubmittingToReviewer(Request $request): bool
     {
         return $request->input('form_action') === 'submit';
+    }
+
+    private function statusLabel(string $status): string
+    {
+        return $status === 'Tunda' ? 'Submit' : $status;
     }
 
     private function achievementRules(Request $request, ?Achievement $achievement = null): array

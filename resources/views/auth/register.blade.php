@@ -1,4 +1,8 @@
 <x-layout-auth>
+    @php
+        $studyPrograms = config('study_programs');
+    @endphp
+
     <form method="POST" action="{{ route('register') }}" autocomplete="off" class="space-y-4 sm:space-y-5">
         @csrf
 
@@ -46,28 +50,9 @@
                 <select id="study_program" name="study_program"
                     class="block w-full pl-10 p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white">
                     <option value="">Pilih Program Studi</option>
-                    <!-- isi opsi program studi tetap sama -->
-                    <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
-                    <option value="Ilmu Administrasi Publik">Ilmu Administrasi Publik</option>
-                    <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
-                    <option value="Bimbingan dan Konseling">Bimbingan dan Konseling</option>
-                    <option value="Pendidikan Kimia">Pendidikan Kimia</option>
-                    <option value="Pendidikan Olahraga">Pendidikan Olahraga</option>
-                    <option value="Manajemen">Manajemen</option>
-                    <option value="Peternakan">Peternakan</option>
-                    <option value="Agribisnis">Agribisnis</option>
-                    <option value="Hukum Ekonomi Syariah">Hukum Ekonomi Syariah</option>
-                    <option value="Ekonomi Syariah">Ekonomi Syariah</option>
-                    <option value="Pendidikan Guru Madrasah Ibtidaiyah">Pendidikan Guru Madrasah Ibtidaiyah</option>
-                    <option value="Teknik Mesin">Teknik Mesin</option>
-                    <option value="Teknik Sipil">Teknik Sipil</option>
-                    <option value="Teknik Elektro">Teknik Elektro</option>
-                    <option value="Teknik Industri">Teknik Industri</option>
-                    <option value="Kesehatan Masyarakat">Kesehatan Masyarakat</option>
-                    <option value="Ilmu Hukum">Ilmu Hukum</option>
-                    <option value="Teknik Informatika">Teknik Informatika</option>
-                    <option value="Sistem Informasi">Sistem Informasi</option>
-                    <option value="Farmasi">Farmasi</option>
+                    @foreach ($studyPrograms as $program)
+                        <option value="{{ $program }}" {{ old('study_program') == $program ? 'selected' : '' }}>{{ $program }}</option>
+                    @endforeach
                 </select>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                     <i class="bi bi-chevron-down text-gray-400"></i>

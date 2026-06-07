@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'Ilmu Komunikasi',
+    'Ilmu Administrasi Publik',
+    'Pendidikan Bahasa Inggris',
+    'Bimbingan dan Konseling',
+    'Pendidikan Kimia',
+    'Pendidikan Olahraga',
+    'Manajemen',
+    'Peternakan',
+    'Agribisnis',
+    'Hukum Ekonomi Syariah',
+    'Ekonomi Syariah',
+    'Pendidikan Guru Madrasah Ibtidaiyah',
+    'Teknik Mesin',
+    'Teknik Sipil',
+    'Teknik Elektro',
+    'Teknik Industri',
+    'Kesehatan Masyarakat',
+    'Ilmu Hukum',
+    'Teknik Informatika',
+    'Sistem Informasi',
+    'Farmasi',
+    'Akutansi Perpajakan',
+];

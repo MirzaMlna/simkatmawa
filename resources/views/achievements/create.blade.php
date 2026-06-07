@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $studyPrograms = config('study_programs');
+    @endphp
+
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header Section -->
@@ -71,27 +75,9 @@
                                         @endif
                                         @if (auth()->user()->role === 'Admin')
                                             <option value="">Pilih Program Studi</option>
-                                            <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
-                                            <option value="Ilmu Administrasi Publik">Ilmu Administrasi Publik</option>
-                                            <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
-                                            <option value="Bimbingan dan Konseling">Bimbingan dan Konseling</option>
-                                            <option value="Pendidikan Kimia">Pendidikan Kimia</option>
-                                            <option value="Pendidikan Olahraga">Pendidikan Olahraga</option>
-                                            <option value="Manajemen">Manajemen</option>
-                                            <option value="Peternakan">Peternakan</option>
-                                            <option value="Agribisnis">Agribisnis</option>
-                                            <option value="Hukum Ekonomi Syariah">Hukum Ekonomi Syariah</option>
-                                            <option value="Ekonomi Syariah">Ekonomi Syariah</option>
-                                            <option value="Pendidikan Guru Madrasah Ibtidaiyah">Pendidikan Guru Madrasah Ibtidaiyah</option>
-                                            <option value="Teknik Mesin">Teknik Mesin</option>
-                                            <option value="Teknik Sipil">Teknik Sipil</option>
-                                            <option value="Teknik Elektro">Teknik Elektro</option>
-                                            <option value="Teknik Industri">Teknik Industri</option>
-                                            <option value="Kesehatan Masyarakat">Kesehatan Masyarakat</option>
-                                            <option value="Ilmu Hukum">Ilmu Hukum</option>
-                                            <option value="Teknik Informatika">Teknik Informatika</option>
-                                            <option value="Sistem Informasi">Sistem Informasi</option>
-                                            <option value="Farmasi">Farmasi</option>
+                                            @foreach ($studyPrograms as $program)
+                                                <option value="{{ $program }}" {{ old('study_program') == $program ? 'selected' : '' }}>{{ $program }}</option>
+                                            @endforeach
                                         @endif
                                     </select>
                                 </div>
@@ -352,7 +338,7 @@
                                 </button>
                                 <button type="submit" name="form_action" value="submit" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl">
                                     <i class="bi bi-check-circle"></i>
-                                    <span>Submit ke Dosen</span>
+                                    <span>Submit</span>
                                 </button>
                             @else
                                 <button type="submit" name="form_action" value="submit" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl">
@@ -377,6 +363,7 @@
             const list = document.getElementById('team-members-list');
             const addButton = document.getElementById('add-team-member');
             const initialMembers = {{ \Illuminate\Support\Js::from($initialTeamMembers) }};
+            const studyPrograms = {{ \Illuminate\Support\Js::from($studyPrograms) }};
             let memberIndex = 0;
 
             function createMemberRow(member = {}) {
@@ -402,7 +389,9 @@
                         </div>
                         <div>
                             <label class="mb-2 block text-sm font-medium text-gray-700">Program Studi</label>
-                            <input type="text" name="team_members[${rowIndex}][study_program]" value="${escapeHtml(member.study_program || '')}" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                            <select name="team_members[${rowIndex}][study_program]" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                                ${studyProgramOptions(member.study_program || '')}
+                            </select>
                         </div>
                     </div>
                 `;
@@ -428,6 +417,21 @@
                     .replace(/'/g, '&#039;');
             }
 
+            function studyProgramOptions(selectedValue = '') {
+                const selected = String(selectedValue);
+                const programs = studyPrograms.includes(selected) || selected === ''
+                    ? studyPrograms
+                    : [selected, ...studyPrograms];
+
+                return [
+                    `<option value="">Pilih Program Studi</option>`,
+                    ...programs.map((program) => {
+                        const value = escapeHtml(program);
+                        return `<option value="${value}" ${program === selected ? 'selected' : ''}>${value}</option>`;
+                    }),
+                ].join('');
+            }
+
             function refreshMemberLabels() {
                 Array.from(list.children).forEach((row, index) => {
                     row.querySelector('span.text-sm').textContent = `Anggota ${index + 1}`;
@@ -437,7 +441,7 @@
             function refreshTeamMemberInputs() {
                 const isGroup = participationType.value === 'Kelompok';
                 section.classList.toggle('hidden', !isGroup);
-                section.querySelectorAll('input').forEach((input) => {
+                section.querySelectorAll('input, select').forEach((input) => {
                     input.disabled = !isGroup;
                 });
 

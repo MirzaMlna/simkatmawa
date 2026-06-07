@@ -11,14 +11,14 @@
                     <p class="text-gray-600 mt-1 text-sm sm:text-base">Kelola dan pantau prestasi akademik</p>
                 </div>
                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 flex-shrink-0">
-                    @if(Auth::user()->role !== 'admin')
+                    @if(Auth::user()->role !== 'Admin')
                         <a href="{{ route('achievements.create') }}" class="inline-flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md text-sm">
                             <i class="bi bi-plus-circle"></i>
                             <span>Tambah Prestasi</span>
                         </a>
                     @endif
-                    @if(Auth::user()->role == 'admin')
-                        <button onclick="exportToExcel()" class="inline-flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md text-sm">
+                    @if(Auth::user()->role == 'Admin')
+                        <a href="{{ url('/achievements.export') }}" class="inline-flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md text-sm">
                             <i class="bi bi-file-earmark-excel"></i>
                             <span>Export Excel</span>
                         </a>
@@ -30,7 +30,7 @@
         <!-- Stats Cards -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
             @if (auth()->user()->role === 'Admin')
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-6 mb-8">
                     <div class="bg-blue-50 p-4 sm:p-6 rounded-xl border border-blue-200">
                         <div class="flex items-center justify-between">
                             <div class="min-w-0">
@@ -39,6 +39,17 @@
                             </div>
                             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <i class="bi bi-trophy text-white text-lg sm:text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="min-w-0">
+                                <h4 class="font-semibold text-gray-800 text-xs sm:text-sm truncate">Draft</h4>
+                                <p class="text-xl sm:text-3xl font-bold text-gray-600 mt-2">{{ $draftCount }}</p>
+                            </div>
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="bi bi-file-earmark text-white text-lg sm:text-xl"></i>
                             </div>
                         </div>
                     </div>
@@ -56,11 +67,11 @@
                     <div class="bg-orange-50 p-4 sm:p-6 rounded-xl border border-orange-200">
                         <div class="flex items-center justify-between">
                             <div class="min-w-0">
-                                <h4 class="font-semibold text-orange-800 text-xs sm:text-sm truncate">Menunggu</h4>
+                                <h4 class="font-semibold text-orange-800 text-xs sm:text-sm truncate">Submit</h4>
                                 <p class="text-xl sm:text-3xl font-bold text-orange-600 mt-2">{{ $pendingCount }}</p>
                             </div>
                             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="bi bi-clock text-white text-lg sm:text-xl"></i>
+                                <i class="bi bi-send text-white text-lg sm:text-xl"></i>
                             </div>
                         </div>
                     </div>
@@ -97,7 +108,8 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                             <select name="status" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm">
                                 <option value="">Semua Status</option>
-                                <option value="Tunda" {{ request('status') == 'Tunda' ? 'selected' : '' }}>Menunggu Verifikasi</option>
+                                <option value="Draft" {{ request('status') == 'Draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="Tunda" {{ request('status') == 'Tunda' ? 'selected' : '' }}>Submit</option>
                                 <option value="Diterima" {{ request('status') == 'Diterima' ? 'selected' : '' }}>Diterima</option>
                                 <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
                             </select>
@@ -108,8 +120,8 @@
                                 <option value="">Semua Tingkat</option>
                                 <option value="Internasional" {{ request('tingkat') == 'Internasional' ? 'selected' : '' }}>Internasional</option>
                                 <option value="Nasional" {{ request('tingkat') == 'Nasional' ? 'selected' : '' }}>Nasional</option>
-                                <option value="Regional" {{ request('tingkat') == 'Regional' ? 'selected' : '' }}>Regional</option>
-                                <option value="Lokal" {{ request('tingkat') == 'Lokal' ? 'selected' : '' }}>Lokal</option>
+                                <option value="Provinsi" {{ request('tingkat') == 'Provinsi' ? 'selected' : '' }}>Provinsi</option>
+                                <option value="Kabupaten / Kota" {{ request('tingkat') == 'Kabupaten / Kota' ? 'selected' : '' }}>Kabupaten / Kota</option>
                             </select>
                         </div>
                     @endif
@@ -198,7 +210,7 @@
                                                 </span>
                                             @elseif ($achievement->status == 'Tunda')
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                                                    <i class="bi bi-clock mr-1"></i>Menunggu
+                                                    <i class="bi bi-send mr-1"></i>Submit
                                                 </span>
                                             @elseif($achievement->status == 'Diterima')
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -232,8 +244,8 @@
                                                     <form action="{{ route('achievements.updateStatus', ['id' => $achievement->id, 'status' => 'Tunda']) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" class="inline-flex items-center p-2 text-yellow-600 hover:text-yellow-900 hover:bg-yellow-50 rounded-lg transition-all duration-200" title="Tunda">
-                                                            <i class="bi bi-clock text-sm"></i>
+                                                        <button type="submit" class="inline-flex items-center p-2 text-yellow-600 hover:text-yellow-900 hover:bg-yellow-50 rounded-lg transition-all duration-200" title="Submit">
+                                                            <i class="bi bi-send text-sm"></i>
                                                         </button>
                                                     </form>
 
@@ -327,7 +339,7 @@
             @if (Auth::user()->role === 'Mahasiswa')
                 <div class="px-4 py-3 text-sm text-gray-500 bg-gray-50 border-t border-gray-200">
                     <i class="bi bi-info-circle mr-1"></i>
-                    Jika data belum lengkap, klik Simpan Draft. Data baru dikirim ke dosen setelah klik Submit ke Dosen dan semua kolom wajib lengkap.
+                    Jika data belum lengkap, klik Simpan Draft. Data baru disubmit setelah klik Submit dan semua kolom wajib lengkap.
                 </div>
             @endif
         </div>
@@ -405,7 +417,7 @@
                                     @if ($achievement->status == 'Draft')
                                         <span class="text-gray-600">Draft</span>
                                     @elseif ($achievement->status == 'Tunda')
-                                        <span class="text-orange-600">Menunggu</span>
+                                        <span class="text-orange-600">Submit</span>
                                     @elseif($achievement->status == 'Diterima')
                                         <span class="text-green-600">Diterima</span>
                                     @else

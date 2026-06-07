@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
@@ -17,7 +18,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
 
     public function collection()
     {
-        return Achievement::where('status', '!=', 'Draft')->get();
+        return Achievement::latest()->get();
     }
 
     public function headings(): array
@@ -33,6 +34,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             'Diselenggarakan Oleh',
             'Tingkat',
             'Jenis Partisipasi',
+            'Jumlah Anggota Kelompok',
             'Anggota Kelompok',
             'Model Pelaksanaan',
             'Nama Kegiatan',
@@ -76,6 +78,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             $a->program_by,
             $a->achievement_level,
             $a->participation_type,
+            $this->countTeamMembers($a->team_members),
             $this->formatTeamMembers($a->team_members),
             $a->execution_model,
             $a->event_name,
@@ -97,7 +100,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
             $a->supervisor_number,
             $a->supervisor_nuptk,
             $a->supervisor_assignment_letter ? url('storage/' . $a->supervisor_assignment_letter) : 'Tidak ada',
-            $a->status,
+            $this->formatStatus($a->status),
             $a->keterangan,
             $a->perwakilan_uniska,
             $a->nama_ormawa,
@@ -108,8 +111,9 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
 
     public function styles(Worksheet $sheet)
     {
-        $dataCount = Achievement::where('status', '!=', 'Draft')->count() + 1; // +1 for heading
-        $range = "A1:AK{$dataCount}";
+        $dataCount = Achievement::count() + 1; // +1 for heading
+        $lastColumn = Coordinate::stringFromColumnIndex(count($this->headings()));
+        $range = "A1:{$lastColumn}{$dataCount}";
 
         // Apply border ke seluruh cell
         $sheet->getStyle($range)->applyFromArray([
@@ -122,7 +126,7 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
         ]);
 
         // Style heading
-        $sheet->getStyle('A1:AK1')->applyFromArray([
+        $sheet->getStyle("A1:{$lastColumn}1")->applyFromArray([
             'font' => [
                 'bold' => true,
                 'size' => 12,
@@ -133,8 +137,14 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
                 'startColor' => ['rgb' => '4A5568'],
             ],
         ]);
+        $sheet->getStyle('L:L')->getAlignment()->setWrapText(true);
 
         return [];
+    }
+
+    private function countTeamMembers(?array $members): int
+    {
+        return empty($members) ? 0 : count($members);
     }
 
     private function formatTeamMembers(?array $members): string
@@ -152,5 +162,10 @@ class AchievementsExport implements FromCollection, WithHeadings, WithMapping, W
                 return ($index + 1) . ". {$identityNumber} - {$name} ({$studyProgram})";
             })
             ->implode("\n");
+    }
+
+    private function formatStatus(?string $status): string
+    {
+        return $status === 'Tunda' ? 'Submit' : (string) $status;
     }
 }

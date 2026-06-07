@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $studyPrograms = config('study_programs');
+    @endphp
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Edit Prestasi Mahasiswa
@@ -72,32 +76,7 @@
                                     <label for="study_program" class="block text-sm font-medium text-gray-700 mb-2">Program Studi</label>
                                     <select name="study_program" id="study_program" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
                                         <option value="">Pilih Program Studi</option>
-                                        @php
-                                            $programs = [
-                                                'Ilmu Komunikasi',
-                                                'Ilmu Administrasi Publik',
-                                                'Pendidikan Bahasa Inggris',
-                                                'Bimbingan dan Konseling',
-                                                'Pendidikan Kimia',
-                                                'Pendidikan Olahraga',
-                                                'Manajemen',
-                                                'Peternakan',
-                                                'Agribisnis',
-                                                'Hukum Ekonomi Syariah',
-                                                'Ekonomi Syariah',
-                                                'Pendidikan Guru Madrasah Ibtidaiyah',
-                                                'Teknik Mesin',
-                                                'Teknik Sipil',
-                                                'Teknik Elektro',
-                                                'Teknik Industri',
-                                                'Kesehatan Masyarakat',
-                                                'Ilmu Hukum',
-                                                'Teknik Informatika',
-                                                'Sistem Informasi',
-                                                'Farmasi',
-                                            ];
-                                        @endphp
-                                        @foreach ($programs as $program)
+                                        @foreach ($studyPrograms as $program)
                                             <option value="{{ $program }}" {{ old('study_program', $achievement->study_program) == $program ? 'selected' : '' }}>{{ $program }}</option>
                                         @endforeach
                                     </select>
@@ -354,7 +333,7 @@
                                 </button>
                                 <button type="submit" name="form_action" value="submit" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl">
                                     <i class="bi bi-check-circle"></i>
-                                    <span>Submit ke Dosen</span>
+                                    <span>Submit</span>
                                 </button>
                             @else
                                 <button type="submit" name="form_action" value="submit" class="inline-flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl">
@@ -380,6 +359,7 @@
             const list = document.getElementById('team-members-list');
             const addButton = document.getElementById('add-team-member');
             const initialMembers = {{ \Illuminate\Support\Js::from($initialTeamMembers) }};
+            const studyPrograms = {{ \Illuminate\Support\Js::from($studyPrograms) }};
             let memberIndex = 0;
 
             function createMemberRow(member = {}) {
@@ -405,7 +385,9 @@
                         </div>
                         <div>
                             <label class="mb-2 block text-sm font-medium text-gray-700">Program Studi</label>
-                            <input type="text" name="team_members[${rowIndex}][study_program]" value="${escapeHtml(member.study_program || '')}" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                            <select name="team_members[${rowIndex}][study_program]" class="team-member-input w-full rounded-lg border border-gray-300 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-blue-500">
+                                ${studyProgramOptions(member.study_program || '')}
+                            </select>
                         </div>
                     </div>
                 `;
@@ -431,6 +413,21 @@
                     .replace(/'/g, '&#039;');
             }
 
+            function studyProgramOptions(selectedValue = '') {
+                const selected = String(selectedValue);
+                const programs = studyPrograms.includes(selected) || selected === ''
+                    ? studyPrograms
+                    : [selected, ...studyPrograms];
+
+                return [
+                    `<option value="">Pilih Program Studi</option>`,
+                    ...programs.map((program) => {
+                        const value = escapeHtml(program);
+                        return `<option value="${value}" ${program === selected ? 'selected' : ''}>${value}</option>`;
+                    }),
+                ].join('');
+            }
+
             function refreshMemberLabels() {
                 Array.from(list.children).forEach((row, index) => {
                     row.querySelector('span.text-sm').textContent = `Anggota ${index + 1}`;
@@ -440,7 +437,7 @@
             function refreshTeamMemberInputs() {
                 const isGroup = participationType.value === 'Kelompok';
                 section.classList.toggle('hidden', !isGroup);
-                section.querySelectorAll('input').forEach((input) => {
+                section.querySelectorAll('input, select').forEach((input) => {
                     input.disabled = !isGroup;
                 });
 

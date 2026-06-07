@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $studyPrograms = config('study_programs');
+    @endphp
+
     <!-- Modern Header Section -->
     <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -41,27 +45,9 @@
                             <select id="study_program" name="study_program"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
                                 <option value="">Pilih Program Studi</option>
-                                <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
-                                <option value="Ilmu Administrasi Publik">Ilmu Administrasi Publik</option>
-                                <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
-                                <option value="Bimbingan dan Konseling">Bimbingan dan Konseling</option>
-                                <option value="Pendidikan Kimia">Pendidikan Kimia</option>
-                                <option value="Pendidikan Olahraga">Pendidikan Olahraga</option>
-                                <option value="Manajemen">Manajemen</option>
-                                <option value="Peternakan">Peternakan</option>
-                                <option value="Agribisnis">Agribisnis</option>
-                                <option value="Hukum Ekonomi Syariah">Hukum Ekonomi Syariah</option>
-                                <option value="Ekonomi Syariah">Ekonomi Syariah</option>
-                                <option value="Pendidikan Guru Madrasah Ibtidaiyah">Pendidikan Guru Madrasah Ibtidaiyah</option>
-                                <option value="Teknik Mesin">Teknik Mesin</option>
-                                <option value="Teknik Sipil">Teknik Sipil</option>
-                                <option value="Teknik Elektro">Teknik Elektro</option>
-                                <option value="Teknik Industri">Teknik Industri</option>
-                                <option value="Kesehatan Masyarakat">Kesehatan Masyarakat</option>
-                                <option value="Ilmu Hukum">Ilmu Hukum</option>
-                                <option value="Teknik Informatika">Teknik Informatika</option>
-                                <option value="Sistem Informasi">Sistem Informasi</option>
-                                <option value="Farmasi">Farmasi</option>
+                                @foreach ($studyPrograms as $program)
+                                    <option value="{{ $program }}" {{ old('study_program') == $program ? 'selected' : '' }}>{{ $program }}</option>
+                                @endforeach
                             </select>
                         </div>
 
