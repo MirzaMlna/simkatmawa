@@ -22,5 +22,5 @@ return [
     'Teknik Informatika',
     'Sistem Informasi',
     'Farmasi',
-    'Akutansi Perpajakan',
+    'Akuntansi Perpajakan',
 ];

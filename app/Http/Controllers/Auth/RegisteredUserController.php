@@ -33,8 +33,10 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'identity_number' => ['required', 'string', 'unique:' . User::class],
             'study_program' => ['required', 'string'],
-            'phone' => ['required', 'string'],
+            'phone' => ['required', 'string', 'regex:/^\+62[0-9]{8,15}$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'phone.regex' => 'Format nomor HP tidak valid. Pastikan diawali dengan +62',
         ]);
 
         $user = User::create([

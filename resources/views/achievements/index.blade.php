@@ -234,7 +234,15 @@
                                                     </a>
 
                                                     <!-- WhatsApp Button -->
-                                                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $achievement->phone) }}" class="inline-flex items-center p-2 text-green-600 hover:text-green-900 hover:bg-green-50 rounded-lg transition-all duration-200" title="Hubungi via WhatsApp" target="_blank">
+                                                    @php
+                                                        $waPhone = preg_replace('/[^0-9]/', '', $achievement->phone);
+                                                        if (str_starts_with($waPhone, '0')) {
+                                                            $waPhone = '62' . substr($waPhone, 1);
+                                                        } elseif (str_starts_with($waPhone, '8')) {
+                                                            $waPhone = '62' . $waPhone;
+                                                        }
+                                                    @endphp
+                                                    <a href="https://wa.me/{{ $waPhone }}" class="inline-flex items-center p-2 text-green-600 hover:text-green-900 hover:bg-green-50 rounded-lg transition-all duration-200" title="Hubungi via WhatsApp" target="_blank">
                                                         <i class="bi bi-whatsapp text-sm"></i>
                                                     </a>
 

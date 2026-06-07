@@ -71,8 +71,9 @@
                 </div>
                 <x-text-input id="phone" class="block w-full pl-10 p-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" 
                     type="text" name="phone" :value="old('phone')" required 
-                    placeholder="Masukkan nomor HP Anda" />
+                    placeholder="Contoh: +628123456789" />
             </div>
+            <p class="mt-1 text-xs text-gray-500">Nomor WA wajib diawali dengan +62</p>
             <x-input-error :messages="$errors->get('phone')" class="mt-2 text-red-600 text-sm" />
         </div>
 
