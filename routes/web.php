@@ -52,8 +52,13 @@ Route::get('/run-migration', function (\Illuminate\Http\Request $request) {
     }
 
     try {
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        $output = 'Cache cleared.<br>';
+        
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        return 'Migration berhasil dijalankan otomatis oleh GitHub Actions! <br> Output: ' . \Illuminate\Support\Facades\Artisan::output();
+        $output .= 'Migration berhasil dijalankan otomatis oleh GitHub Actions! <br> Output: ' . \Illuminate\Support\Facades\Artisan::output();
+        
+        return $output;
     } catch (\Exception $e) {
         return 'Error: ' . $e->getMessage();
     }
